@@ -181,7 +181,7 @@
 }
 
 .content-container {
-  max-width: 1400px; /* Reduced slightly for better focus in 3-col */
+  max-width: 100%; /* Allow content to span the full available width */
   margin: 0 auto;
   padding: 2rem;
   width: 100%;
