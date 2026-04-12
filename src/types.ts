@@ -1,4 +1,5 @@
 export interface User {
+  id: string;
   name: string;
   accountNumber: string;
   phone: string;
@@ -29,3 +30,13 @@ export interface Transaction {
   amount: number;
   type: 'debit' | 'credit';
 }
+
+export interface Notification {
+  id: string;
+  date: string;
+  message: string;
+  read: boolean;
+}
+
+export type AuthView = 'login' | 'verify' | 'register';
+export type DashboardTab = 'overview' | 'loans' | 'payments' | 'apply' | 'profile' | 'admin';

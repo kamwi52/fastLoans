@@ -4,6 +4,8 @@ import type { User } from '../types';
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
+  phoneNumber: string | null;
+  verifyOtp: (code: string) => Promise<boolean>;
   login: (phone: string, pin: string) => void;
   logout: () => void;
 }
@@ -39,13 +41,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('zf_user', JSON.stringify(mockUser));
   };
 
+  const verifyOtp = async (_code: string) => {
+    return true;
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('zf_user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, phoneNumber: user?.phone || null, verifyOtp, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

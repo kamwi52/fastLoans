@@ -21,7 +21,7 @@ const mockApplications: Application[] = [
 ];
 
 export default function Admin() {
-  const [apps, setApps] = useState(mockApplications);
+  const [apps] = useState(mockApplications);
 
   return (
     <div className="admin-root fade-in">

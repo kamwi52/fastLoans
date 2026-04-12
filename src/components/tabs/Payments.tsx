@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Transaction, Loan } from '../../types';
-import { fmtZMK, formatDate } from './formatters';
+import { fmtZMK, formatDate } from '../../utils/formatters';
 import './Payments.css';
 
 interface PaymentsProps {
@@ -54,7 +54,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
                 <option value="">— Choose a loan —</option>
                 {activeLoans.map((l) => (
                   <option key={l.id} value={l.id}>
-                    {l.type} Loan ({l.id}) — Balance: {fmt(l.balance)}
+                    {l.type} Loan ({l.id}) — Balance: {fmtZMK(l.balance)}
                   </option>
                 ))}
               </select>
