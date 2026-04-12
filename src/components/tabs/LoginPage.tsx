@@ -29,7 +29,7 @@ export const LoginPage: React.FC = () => {
     setLoading(true);
     // Simulate authentication delay for better UX
     setTimeout(() => {
-      login(phone, pin);
+      login(phone, pin); // Correctly passing both arguments
       setLoading(false);
       navigate('/');
     }, 800);
