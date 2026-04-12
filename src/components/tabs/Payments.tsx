@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import type { Transaction, Loan } from '../../types';
+import { fmtZMK, formatDate } from './formatters';
 import './Payments.css';
 
 interface PaymentsProps {
   transactions: Transaction[];
   loans: Loan[];
 }
-
-const fmt = (n: number) =>
-  'K ' + n.toLocaleString('en-ZM', { minimumFractionDigits: 2 });
 
 export default function Payments({ transactions, loans }: PaymentsProps) {
   const [payAmount, setPayAmount] = useState('');
@@ -86,7 +84,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
                           type="button"
                           onClick={() => setPayAmount(String(l.monthlyPayment))}
                         >
-                          Monthly ({fmt(l.monthlyPayment)})
+                          Monthly ({fmtZMK(l.monthlyPayment)})
                         </button>
                         <button
                           type="button"
@@ -144,7 +142,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
                   <span className="upcoming-type">{loan.type} Loan</span>
                   <span className="upcoming-date">Due: {formatDate(loan.nextPaymentDate)}</span>
                 </div>
-                <span className="upcoming-amount">{fmt(loan.monthlyPayment)}</span>
+                <span className="upcoming-amount">{fmtZMK(loan.monthlyPayment)}</span>
               </div>
             ))}
           </div>
@@ -183,7 +181,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
                     <span className="txn-loan-badge">{txn.loanId}</span>
                   </td>
                   <td className={`txn-amount ${txn.type}`}>
-                    {txn.type === 'debit' ? '-' : '+'}{fmt(txn.amount)}
+                    {txn.type === 'debit' ? '-' : '+'}{fmtZMK(txn.amount)}
                   </td>
                   <td>
                     <span className={`txn-type-badge ${txn.type}`}>
@@ -198,13 +196,4 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
       </div>
     </div>
   );
-}
-
-function formatDate(dateStr: string | null): string {
-  if (!dateStr || dateStr === '-') return '—';
-  return new Date(dateStr).toLocaleDateString('en-ZM', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
 }

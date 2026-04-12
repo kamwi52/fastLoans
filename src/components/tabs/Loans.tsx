@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import type { Loan } from '../../types';
+import { fmtZMK, formatDate } from './formatters';
 import './Loans.css';
 
 interface LoansProps {
   loans: Loan[];
 }
-
-const fmt = (n: number) =>
-  'K ' + n.toLocaleString('en-ZM', { minimumFractionDigits: 2 });
 
 const statusColor: Record<string, string> = {
   Active: '#10b981',
@@ -85,15 +83,15 @@ export default function Loans({ loans }: LoansProps) {
             <div className="loan-card-summary">
               <div className="loan-stat">
                 <span className="stat-label">Loan Amount</span>
-                <span className="stat-value">{fmt(loan.amount)}</span>
+                <span className="stat-value">{fmtZMK(loan.amount)}</span>
               </div>
               <div className="loan-stat">
                 <span className="stat-label">Outstanding</span>
-                <span className="stat-value highlight">{fmt(loan.balance)}</span>
+                <span className="stat-value highlight">{fmtZMK(loan.balance)}</span>
               </div>
               <div className="loan-stat">
                 <span className="stat-label">Monthly Payment</span>
-                <span className="stat-value">{loan.monthlyPayment > 0 ? fmt(loan.monthlyPayment) : '—'}</span>
+                <span className="stat-value">{loan.monthlyPayment > 0 ? fmtZMK(loan.monthlyPayment) : '—'}</span>
               </div>
               <div className="loan-stat">
                 <span className="stat-label">Interest Rate</span>
@@ -133,7 +131,7 @@ export default function Loans({ loans }: LoansProps) {
                   </div>
                   <div className="detail-item">
                     <span className="detail-label">Amount Repaid</span>
-                    <span className="detail-value">{fmt(loan.amount - loan.balance)}</span>
+                    <span className="detail-value">{fmtZMK(loan.amount - loan.balance)}</span>
                   </div>
                 </div>
                 <div className="loan-card-actions">
@@ -154,13 +152,4 @@ export default function Loans({ loans }: LoansProps) {
       </div>
     </div>
   );
-}
-
-function formatDate(dateStr: string | null): string {
-  if (!dateStr || dateStr === '-') return '—';
-  return new Date(dateStr).toLocaleDateString('en-ZM', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
 }

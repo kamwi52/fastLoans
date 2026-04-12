@@ -159,11 +159,13 @@ export default function Dashboard() {
               <div className="activity-item">
                 <div className="activity-icon info">ℹ️</div>
                 <div className="activity-details">
-                <p>System Update</p>
-                <small>2 hours ago</small>
+                  <p>System Update</p>
+                  <small>2 hours ago</small>
+                </div>
               </div>
             </div>
           </div>
+        </div>
         <button 
           className="pane-toggle right-float" 
           onClick={() => setRightSidebarOpen(!isRightSidebarOpen)}
