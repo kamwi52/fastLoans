@@ -34,9 +34,11 @@ export interface Transaction {
 export interface Notification {
   id: string;
   date: string;
+  time?: string;
   message: string;
   read: boolean;
+  type: 'info' | 'warning' | 'success' | 'error';
 }
 
-export type AuthView = 'login' | 'verify' | 'register';
+export type AuthView = 'login' | 'verify' | 'register' | 'otp' | 'dashboard';
 export type DashboardTab = 'overview' | 'loans' | 'payments' | 'apply' | 'profile' | 'admin';

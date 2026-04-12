@@ -30,6 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = (phone: string, _pin: string) => {
     const isAdmin = phone === '0999999999'; // Example admin phone number
     const mockUser: User = {
+      id: 'USR-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
       name: isAdmin ? 'Admin System' : 'John Doe',
       accountNumber: isAdmin ? 'ADMIN-001' : 'ZM-882910',
       phone: phone,

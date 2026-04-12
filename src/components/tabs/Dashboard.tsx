@@ -10,6 +10,7 @@ import './Dashboard.css';
 import type { User, Loan, Transaction } from '../../types';
 
 const mockUser: User = {
+  id: 'USR-001',
   name: 'John Doe',
   accountNumber: 'ZM-882910',
   phone: '+260971234567',
