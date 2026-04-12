@@ -32,7 +32,7 @@ export default function Admin() {
           <p>Manage and review incoming loan applications</p>
         </div>
         <a 
-          href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID" 
+          href={`https://docs.google.com/spreadsheets/d/${import.meta.env.VITE_GOOGLE_SHEET_ID || ''}`} 
           target="_blank" 
           rel="noreferrer"
           className="sheet-link-btn"

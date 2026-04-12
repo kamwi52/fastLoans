@@ -94,8 +94,9 @@ export default function Apply() {
     };
 
     try {
-      // Replace this URL with your deployed Google Apps Script Web App URL
-      await fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+      const scriptId = import.meta.env.VITE_GOOGLE_SCRIPT_ID;
+      if (!scriptId) throw new Error('Script ID not configured');
+      await fetch(`https://script.google.com/macros/s/${scriptId}/exec`, {
         method: 'POST',
         mode: 'no-cors', // Required for Google Apps Script
         body: JSON.stringify(payload),

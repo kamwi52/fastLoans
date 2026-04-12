@@ -1,21 +1,4 @@
 import { useState, useEffect } from 'react';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Menu, 
-  Settings, 
-  LayoutDashboard, 
-  Briefcase, 
-  Wallet, 
-  FileText, 
-  UserCircle, 
-  ShieldCheck,
-  LogOut,
-  BarChart3,
-  Phone,
-  Ban,
-  Info
-} from 'lucide-react';
 import Overview from './Overview';
 import Loans from './Loans';
 import Payments from './Payments';
@@ -101,101 +84,72 @@ export default function Dashboard() {
       case 'apply': return <Apply />;
       case 'profile': return <Profile user={user} />;
       case 'admin': return isAdmin ? <Admin /> : <Overview user={user} loans={displayLoans} transactions={displayTransactions} onTabChange={setActiveTab} />;
-      default: return <Overview user={user} loans={displayLoans} transactions={displayTransactions} onTabChange={setActiveTab} />;
+      default: return isAdmin ? <Admin /> : <Overview user={user} loans={displayLoans} transactions={displayTransactions} onTabChange={setActiveTab} />;
     }
   };
 
   return (
     <div className="dashboard-container">
-      <div className={`sidebar-overlay ${(isSidebarOpen || (isAdmin && isRightSidebarOpen)) ? 'show' : ''}`} 
+      <div className={`sidebar-overlay ${(isSidebarOpen || isRightSidebarOpen) ? 'show' : ''}`} 
            onClick={() => { setSidebarOpen(false); setRightSidebarOpen(false); }} />
       
       {/* LEFT SIDEBAR */}
       <aside className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
         <div className="logo">FastLoans</div>
-        <button className="sidebar-handle left" onClick={() => setSidebarOpen(false)}>
-          <ChevronLeft size={14} strokeWidth={3} />
-        </button>
         <nav>
           {isAdmin && (
-            <button className={activeTab === 'admin' ? 'active' : ''} onClick={() => { setActiveTab('admin'); setSidebarOpen(false); }}>
-              <ShieldCheck size={18} /> Admin Console
-            </button>
+            <button className={activeTab === 'admin' ? 'active' : ''} onClick={() => { setActiveTab('admin'); setSidebarOpen(false); }}>🛡️ Admin Console</button>
           )}
-          <button className={activeTab === 'overview' ? 'active' : ''} onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}>
-            <LayoutDashboard size={18} /> Overview
-          </button>
+          <button className={activeTab === 'overview' ? 'active' : ''} onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}>📊 Overview</button>
           {!isAdmin && (
             <>
-              <button className={activeTab === 'loans' ? 'active' : ''} onClick={() => { setActiveTab('loans'); setSidebarOpen(false); }}>
-                <Briefcase size={18} /> My Loans
-              </button>
-              <button className={activeTab === 'payments' ? 'active' : ''} onClick={() => { setActiveTab('payments'); setSidebarOpen(false); }}>
-                <Wallet size={18} /> Payments
-              </button>
-              <button className={activeTab === 'apply' ? 'active' : ''} onClick={() => { setActiveTab('apply'); setSidebarOpen(false); }}>
-                <FileText size={18} /> Apply Now
-              </button>
+              <button className={activeTab === 'loans' ? 'active' : ''} onClick={() => { setActiveTab('loans'); setSidebarOpen(false); }}>💼 My Loans</button>
+              <button className={activeTab === 'payments' ? 'active' : ''} onClick={() => { setActiveTab('payments'); setSidebarOpen(false); }}>💸 Payments</button>
+              <button className={activeTab === 'apply' ? 'active' : ''} onClick={() => { setActiveTab('apply'); setSidebarOpen(false); }}>📝 Apply Now</button>
             </>
           )}
-          <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => { setActiveTab('profile'); setSidebarOpen(false); }}>
-            <UserCircle size={18} /> Profile
-          </button>
+          <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => { setActiveTab('profile'); setSidebarOpen(false); }}>👤 Profile</button>
         </nav>
-        <button className="logout-btn" onClick={logout}>
-          <LogOut size={18} /> Logout
-        </button>
+        <button className="logout-btn" onClick={logout}>🚪 Logout</button>
       </aside>
       <main className="content">
         <div className="content-container">
           <header className="content-header">
             <div className="header-left">
-              {!isSidebarOpen && (
-                <button className="sidebar-trigger" onClick={() => setSidebarOpen(true)}>
-                  <Menu size={20} />
-                </button>
-              )}
-              <div>
-                <h1>Welcome, {user.name.split(' ')[0]}!</h1>
-                <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-              </div>
+              <button className="pane-toggle left" onClick={() => setSidebarOpen(!isSidebarOpen)}>{isSidebarOpen ? '◀' : '☰'}</button>
+              <h1>Welcome, {user.name.split(' ')[0]}!</h1>
+              <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
             </div>
             <div className="header-right">
-              {isAdmin && !isRightSidebarOpen && (
-                <button className="sidebar-trigger secondary" onClick={() => setRightSidebarOpen(true)} title="Quick Actions">
-                  <Settings size={18} />
-                  <span>Actions</span>
-                </button>
+              {!isRightSidebarOpen && (
+                <button className="pane-toggle right" onClick={() => setRightSidebarOpen(true)}>⚙️</button>
               )}
               <div className="user-profile-mini">
                 <div className="avatar-circle">{(user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase()}</div>
               </div>
             </div>
           </header>
-          <div className="tab-content-wrapper fade-in">
-            {renderContent()}
-          </div>
+          {renderContent()}
         </div>
       </main>
 
       {/* RIGHT SIDEBAR */}
-      {isAdmin && (
       <aside className={`right-sidebar ${isRightSidebarOpen ? 'open' : 'closed'}`}>
-        <button className="sidebar-handle right" onClick={() => setRightSidebarOpen(false)}>
-          <ChevronRight size={14} strokeWidth={3} />
-        </button>
         <div className="sidebar-content">
-          <div className="right-sidebar-header"><h3>Quick Actions</h3></div>
+          <div className="right-sidebar-header">
+            <h3>Quick Actions</h3>
+            <button className="close-pane" onClick={() => setRightSidebarOpen(false)}>✕</button>
+          </div>
           
           <div className="action-stack">
-            <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID" target="_blank" rel="noreferrer" className="pane-btn primary">
-              <BarChart3 size={18} /> Open Google Sheet
+            <a href={`https://docs.google.com/spreadsheets/d/${import.meta.env.VITE_GOOGLE_SHEET_ID || ''}`} target="_blank" rel="noreferrer" className="pane-btn primary">
+              <span className="button-icon">📊</span> Open Google Sheet
             </a>
             <button className="pane-btn">
-              <Phone size={18} /> Contact Client
+              <span className="button-icon">📞</span> Contact Client
             </button>
             <button className="pane-btn danger">
-              <Ban size={18} /> Reject Application
+              <span className="button-icon">🚫</span> Reject Application
             </button>
           </div>
 
@@ -203,17 +157,22 @@ export default function Dashboard() {
             <h4 className="activity-title">Recent Activity</h4>
             <div className="activity-card">
               <div className="activity-item">
-                <div className="activity-icon info"><Info size={14} /></div>
+                <div className="activity-icon info">ℹ️</div>
                 <div className="activity-details">
-                  <p>System Update</p>
-                  <small>2 hours ago</small>
-                </div>
+                <p>System Update</p>
+                <small>2 hours ago</small>
               </div>
             </div>
           </div>
         </div>
+        </div>
+        <button 
+          className="pane-toggle right-float" 
+          onClick={() => setRightSidebarOpen(!isRightSidebarOpen)}
+        >
+          {isRightSidebarOpen ? '▶' : '⚙️'}
+        </button>
       </aside>
-      )}
     </div>
   );
 }
