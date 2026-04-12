@@ -1,5 +1,5 @@
 import type { User, Loan, Transaction } from '../../types';
-import { fmtZMK, formatDate } from '../../utils/formatters';
+import { fmtZMK, formatDate } from './formatters';
 import './Overview.css';
 
 interface OverviewProps {

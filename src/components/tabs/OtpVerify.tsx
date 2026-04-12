@@ -5,7 +5,7 @@ import './LoginPage.css'; // Reusing login styles for consistency
 
 const OtpVerify: React.FC = () => {
   const navigate = useNavigate();
-  const { verifyOtp, phoneNumber } = useAuth();
+  const { verifyOtp } = useAuth();
   const [otp, setOtp] = useState('');
 
   const handleVerify = async () => {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { fmtZMK } from '../../utils/formatters';
+import { fmtZMK } from './formatters';
 import './Admin.css';
 
 interface Application {

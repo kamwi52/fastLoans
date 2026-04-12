@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Loan } from '../../types';
-import { fmtZMK, formatDate } from '../../utils/formatters';
+import { fmtZMK, formatDate } from './formatters';
 import './Loans.css';
 
 interface LoansProps {
