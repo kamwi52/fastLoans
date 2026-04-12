@@ -164,8 +164,6 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-        </div>
-        </div>
         <button 
           className="pane-toggle right-float" 
           onClick={() => setRightSidebarOpen(!isRightSidebarOpen)}

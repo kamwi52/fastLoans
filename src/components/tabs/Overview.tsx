@@ -1,4 +1,5 @@
 import type { User, Loan, Transaction } from '../../types';
+import { fmtZMK, formatDate } from '../../utils/formatters';
 import './Overview.css';
 
 interface OverviewProps {
@@ -7,9 +8,6 @@ interface OverviewProps {
   transactions: Transaction[];
   onTabChange: (tab: string) => void;
 }
-
-const fmt = (n: number) => 
-  'K ' + n.toLocaleString('en-ZM', { minimumFractionDigits: 2 });
 
 const statusColor: Record<string, string> = {
   Active: '#10b981',
@@ -45,7 +43,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
           <div className="summary-icon">💰</div>
           <div className="summary-body">
             <span className="summary-label">Total Borrowed</span>
-            <span className="summary-value">{fmt(totalBorrowed)}</span>
+            <span className="summary-value">{fmtZMK(totalBorrowed)}</span>
             <span className="summary-sub">Across {loans.length} loans</span>
           </div>
         </div>
@@ -54,7 +52,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
           <div className="summary-icon">📉</div>
           <div className="summary-body">
             <span className="summary-label">Outstanding Balance</span>
-            <span className="summary-value">{fmt(totalOutstanding)}</span>
+            <span className="summary-value">{fmtZMK(totalOutstanding)}</span>
             <span className="summary-sub">{activeLoans.length} active loans</span>
           </div>
         </div>
@@ -63,7 +61,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
           <div className="summary-icon">📅</div>
           <div className="summary-body">
             <span className="summary-label">Monthly Repayments</span>
-            <span className="summary-value">{fmt(totalMonthlyDue)}</span>
+            <span className="summary-value">{fmtZMK(totalMonthlyDue)}</span>
             <span className="summary-sub">{nextDueDate ? `Next due: ${formatDate(nextDueDate)}` : 'No upcoming payments'}</span>
           </div>
         </div>
@@ -109,11 +107,11 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
                 <div className="loan-mini-amounts">
                   <div>
                     <span className="mini-label">Balance</span>
-                    <span className="mini-value">{fmt(loan.balance)}</span>
+                    <span className="mini-value">{fmtZMK(loan.balance)}</span>
                   </div>
                   <div>
                     <span className="mini-label">Monthly</span>
-                    <span className="mini-value">{fmt(loan.monthlyPayment)}</span>
+                    <span className="mini-value">{fmtZMK(loan.monthlyPayment)}</span>
                   </div>
                   <div>
                     <span className="mini-label">Rate</span>
@@ -150,7 +148,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
                   <span className="txn-desc">{txn.description}</span>
                   <span className="txn-date">{formatDate(txn.date)}</span>
                 </div>
-                <span className="txn-amount debit">-{fmt(txn.amount)}</span>
+                <span className="txn-amount debit">-{fmtZMK(txn.amount)}</span>
               </div>
             ))}
           </div>
@@ -179,13 +177,4 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
       )}
     </div>
   );
-}
-
-function formatDate(dateStr: string | null): string {
-  if (!dateStr || dateStr === '-') return '—';
-  return new Date(dateStr).toLocaleDateString('en-ZM', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
 }

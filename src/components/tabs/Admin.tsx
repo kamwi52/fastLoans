@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { fmtZMK } from '../../utils/formatters';
 import './Admin.css';
 
 interface Application {
@@ -21,8 +22,6 @@ const mockApplications: Application[] = [
 
 export default function Admin() {
   const [apps, setApps] = useState(mockApplications);
-
-  const fmt = (n: number) => 'K ' + n.toLocaleString('en-ZM');
 
   return (
     <div className="admin-root fade-in">
@@ -75,7 +74,7 @@ export default function Admin() {
                 <td className="font-mono">{app.id}</td>
                 <td>{app.applicant}</td>
                 <td>{app.product}</td>
-                <td><strong>{fmt(app.amount)}</strong></td>
+                <td><strong>{fmtZMK(app.amount)}</strong></td>
                 <td>
                   <span className={`kyc-tag ${app.kyc.toLowerCase()}`}>{app.kyc}</span>
                 </td>
