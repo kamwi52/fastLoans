@@ -91,7 +91,7 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      <div className={`sidebar-overlay ${(isSidebarOpen || isRightSidebarOpen) ? 'show' : ''}`} 
+      <div className={`sidebar-overlay ${(isSidebarOpen || (isAdmin && isRightSidebarOpen)) ? 'show' : ''}`} 
            onClick={() => { setSidebarOpen(false); setRightSidebarOpen(false); }} />
       
       {/* LEFT SIDEBAR */}
@@ -135,6 +135,7 @@ export default function Dashboard() {
       </main>
 
       {/* RIGHT SIDEBAR */}
+      {isAdmin && (
       <aside className={`right-sidebar ${isRightSidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-content">
           <div className="right-sidebar-header">
@@ -174,6 +175,7 @@ export default function Dashboard() {
           {isRightSidebarOpen ? '▶' : '⚙️'}
         </button>
       </aside>
+      )}
     </div>
   );
 }
