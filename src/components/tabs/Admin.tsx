@@ -13,11 +13,11 @@ interface Application {
 }
 
 const mockApplications: Application[] = [
-  { id: 'APP-9012', date: '2024-05-20', applicant: '+260971234567', product: 'Personal Loan', amount: 25000, status: 'Pending', kyc: 'Verified' },
-  { id: 'APP-9011', date: '2024-05-19', applicant: '+260950112233', product: 'Business Loan', amount: 500000, status: 'Pending', kyc: 'Pending' },
-  { id: 'APP-9008', date: '2024-05-18', applicant: '+260966445566', product: 'Auto Loan', amount: 120000, status: 'Approved', kyc: 'Verified' },
-  { id: 'APP-9005', date: '2024-05-15', applicant: '+260977889900', product: 'Education Loan', amount: 15000, status: 'Rejected', kyc: 'Verified' },
-  { id: 'APP-9001', date: '2024-05-10', applicant: '+260955112233', product: 'Personal Loan', amount: 10000, status: 'Approved', kyc: 'Verified' },
+  { id: 'APP-9012', date: '2024-05-20', applicant: '+260971234567', product: 'Personal Loan', amount: 2500, status: 'Pending', kyc: 'Verified' },
+  { id: 'APP-9011', date: '2024-05-19', applicant: '+260950112233', product: 'Business Loan', amount: 5000, status: 'Pending', kyc: 'Pending' },
+  { id: 'APP-9008', date: '2024-05-18', applicant: '+260966445566', product: 'Auto Loan', amount: 1200, status: 'Approved', kyc: 'Verified' },
+  { id: 'APP-9005', date: '2024-05-15', applicant: '+260977889900', product: 'Education Loan', amount: 1500, status: 'Rejected', kyc: 'Verified' },
+  { id: 'APP-9001', date: '2024-05-10', applicant: '+260955112233', product: 'Personal Loan', amount: 1000, status: 'Approved', kyc: 'Verified' },
 ];
 
 export default function Admin() {
@@ -51,7 +51,7 @@ export default function Admin() {
         </div>
         <div className="admin-stat-card">
           <span className="stat-title">Total Disbursed</span>
-          <span className="stat-count success">K 1.2M</span>
+          <span className="stat-count success">K 42,500</span>
         </div>
       </div>
 

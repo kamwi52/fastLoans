@@ -24,9 +24,9 @@ const mockLoans: Loan[] = [
     id: 'LN-1001',
     type: 'Personal',
     status: 'Active',
-    amount: 50000,
-    balance: 32500,
-    monthlyPayment: 2450,
+    amount: 5000,
+    balance: 3250,
+    monthlyPayment: 245,
     interestRate: 12.5,
     progress: 35,
     startDate: '2024-01-15',
@@ -37,8 +37,8 @@ const mockLoans: Loan[] = [
     id: 'LN-1005',
     type: 'Business',
     status: 'Pending',
-    amount: 150000,
-    balance: 150000,
+    amount: 8000,
+    balance: 8000,
     monthlyPayment: 0,
     interestRate: 9.5,
     progress: 0,
@@ -49,8 +49,8 @@ const mockLoans: Loan[] = [
 ];
 
 const mockTransactions: Transaction[] = [
-  { id: 'TX-9901', date: '2026-03-25', description: 'Monthly Installment', loanId: 'LN-1001', amount: 2450, type: 'debit' },
-  { id: 'TX-9850', date: '2026-02-25', description: 'Monthly Installment', loanId: 'LN-1001', amount: 2450, type: 'debit' },
+  { id: 'TX-9901', date: '2026-03-25', description: 'Monthly Installment', loanId: 'LN-1001', amount: 245, type: 'debit' },
+  { id: 'TX-9850', date: '2026-02-25', description: 'Monthly Installment', loanId: 'LN-1001', amount: 245, type: 'debit' },
 ];
 
 export default function Dashboard() {

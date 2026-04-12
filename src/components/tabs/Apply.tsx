@@ -9,8 +9,8 @@ const loanProducts = [
     id: 'personal',
     name: 'Personal Loan',
     icon: '👤',
-    rate: '10.5% – 24.5%',
-    max: 'K 250,000',
+    rate: '12.5%',
+    max: 'K 5,000',
     term: '6 – 60 months',
     desc: 'For personal expenses, emergencies, or debt consolidation.',
   },
@@ -18,8 +18,8 @@ const loanProducts = [
     id: 'business',
     name: 'Business Loan',
     icon: '🏢',
-    rate: '8.5% – 18%',
-    max: 'K 5,000,000',
+    rate: '10.5%',
+    max: 'K 10,000',
     term: '12 – 84 months',
     desc: 'Grow your business with flexible working capital.',
   },
@@ -27,8 +27,8 @@ const loanProducts = [
     id: 'education',
     name: 'Education Loan',
     icon: '🎓',
-    rate: '7.5% – 12%',
-    max: 'K 500,000',
+    rate: '8.5%',
+    max: 'K 3,500',
     term: '12 – 120 months',
     desc: 'Invest in your future with affordable study financing.',
   },
@@ -36,8 +36,8 @@ const loanProducts = [
     id: 'auto',
     name: 'Auto Loan',
     icon: '🚗',
-    rate: '9% – 15%',
-    max: 'K 1,500,000',
+    rate: '11.5%',
+    max: 'K 7,500',
     term: '12 – 72 months',
     desc: 'Drive your dream car with competitive vehicle finance.',
   },
@@ -50,7 +50,7 @@ export default function Apply() {
   const [loanAmount, setLoanAmount] = useState('');
   const [loanTerm, setLoanTerm] = useState('24');
   const [purpose, setPurpose] = useState('');
-  const [income, setIncome] = useState('35000');
+  const [income, setIncome] = useState('8500');
   const [nrcNumber, setNrcNumber] = useState('123456/11/1');
   const [idFile, setIdFile] = useState<string | null>(null);
   const [residenceFile, setResidenceFile] = useState<string | null>(null);
@@ -236,15 +236,15 @@ export default function Apply() {
                   <input
                     type="number"
                     min="1000"
-                    max="5000000"
+                    max="10000"
                     step="1000"
-                    placeholder="50 000"
+                    placeholder="5 000"
                     value={loanAmount}
                     onChange={(e) => setLoanAmount(e.target.value)}
                   />
                 </div>
                 <div className="amount-presets">
-                  {[10000, 25000, 50000, 100000, 250000].map((amt) => (
+                  {[1000, 2500, 5000, 7500, 9500].map((amt) => (
                     <button key={amt} type="button" onClick={() => setLoanAmount(String(amt))}>
                       K {amt.toLocaleString('en-ZM')}
                     </button>
