@@ -190,7 +190,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
       {/* Transaction History */}
       <div className="txn-history-card">
         <h3>Transaction History</h3>
-        <div className="overflow-x-auto">
+        <div className="txn-table-wrap">
           <table className="txn-table">
             <thead>
               <tr>

@@ -255,13 +255,15 @@
 
 /* Transaction History */
 .txn-table-wrap {
+  width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .txn-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 700px;
+  min-width: 600px;
 }
 
 .txn-table th, .txn-table td {
@@ -350,5 +352,9 @@
 @media (max-width: 768px) {
   .payments-top {
     grid-template-columns: 1fr;
+  }
+
+  .payment-form-card, .payment-summary-card, .txn-history-card {
+    padding: 1.25rem;
   }
 }
