@@ -13,6 +13,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
   const [selectedLoan, setSelectedLoan] = useState('');
   const [paySuccess, setPaySuccess] = useState(false);
   const [payLoading, setPayLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('momo');
 
   const activeLoans = loans.filter((l) => l.status === 'Active');
 
@@ -107,13 +108,41 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
             <div className="pay-form-group">
               <label>Payment Method</label>
               <div className="pay-methods">
-                <label className="pay-method active">
-                  <input type="radio" name="method" defaultChecked />
-                  <span>🏦 Bank Transfer (EFT)</span>
+                <label className={`pay-method ${paymentMethod === 'momo' ? 'active' : ''}`}>
+                  <input 
+                    type="radio" 
+                    name="method" 
+                    checked={paymentMethod === 'momo'} 
+                    onChange={() => setPaymentMethod('momo')} 
+                  />
+                  <span>📱 Mobile Money (MTN/Airtel/Zamtel)</span>
                 </label>
-                <label className="pay-method">
-                  <input type="radio" name="method" />
-                  <span>💳 Debit Card</span>
+                <label className={`pay-method ${paymentMethod === 'xapit' ? 'active' : ''}`}>
+                  <input 
+                    type="radio" 
+                    name="method" 
+                    checked={paymentMethod === 'xapit'} 
+                    onChange={() => setPaymentMethod('xapit')} 
+                  />
+                  <span>🇿 Zanaco Xapit</span>
+                </label>
+                <label className={`pay-method ${paymentMethod === 'fnb' ? 'active' : ''}`}>
+                  <input 
+                    type="radio" 
+                    name="method" 
+                    checked={paymentMethod === 'fnb'} 
+                    onChange={() => setPaymentMethod('fnb')} 
+                  />
+                  <span>🌳 FNB Bank</span>
+                </label>
+                <label className={`pay-method ${paymentMethod === 'indo' ? 'active' : ''}`}>
+                  <input 
+                    type="radio" 
+                    name="method" 
+                    checked={paymentMethod === 'indo'} 
+                    onChange={() => setPaymentMethod('indo')} 
+                  />
+                  <span>🏦 Indo Zambia Bank</span>
                 </label>
               </div>
             </div>

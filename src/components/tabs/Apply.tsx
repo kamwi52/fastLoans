@@ -51,6 +51,8 @@ export default function Apply() {
   const [loanTerm, setLoanTerm] = useState('24');
   const [purpose, setPurpose] = useState('');
   const [income, setIncome] = useState('8500');
+  const [disbursementMethod, setDisbursementMethod] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
   const [nrcNumber, setNrcNumber] = useState('123456/11/1');
   const [idFile, setIdFile] = useState<string | null>(null);
   const [residenceFile, setResidenceFile] = useState<string | null>(null);
@@ -84,6 +86,8 @@ export default function Apply() {
       amount: loanAmount,
       term: loanTerm,
       purpose: purpose,
+      disbursementMethod: disbursementMethod,
+      accountNumber: accountNumber,
       monthlyIncome: income,
       employmentStatus: employmentStatus,
       nrcNumber: nrcNumber,
@@ -315,6 +319,32 @@ export default function Apply() {
                 </select>
               </div>
               <div className="details-field">
+                <label>Disbursement Method</label>
+                <select 
+                  value={disbursementMethod} 
+                  onChange={(e) => setDisbursementMethod(e.target.value)} 
+                  required
+                >
+                  <option value="">— Select method —</option>
+                  <option value="momo">Mobile Money (MTN/Airtel/Zamtel)</option>
+                  <option value="xapit">Zanaco Xapit</option>
+                  <option value="fnb">FNB Bank</option>
+                  <option value="indo">Indo Zambia Bank</option>
+                </select>
+              </div>
+              {disbursementMethod && (
+                <div className="details-field">
+                  <label>{disbursementMethod === 'momo' ? 'Mobile Money Number' : 'Account Number'}</label>
+                  <input 
+                    type="text" 
+                    placeholder={disbursementMethod === 'momo' ? '09XXXXXXXX' : 'Enter account number'} 
+                    value={accountNumber} 
+                    onChange={(e) => setAccountNumber(e.target.value)} 
+                    required
+                  />
+                </div>
+              )}
+              <div className="details-field">
                 <label>NRC Number</label>
                 <input 
                   type="text" 
@@ -372,7 +402,7 @@ export default function Apply() {
               <button
                 className="step-next-btn"
                 style={{ backgroundColor: theme.primary }}
-                disabled={!purpose}
+                disabled={!purpose || !disbursementMethod || !accountNumber}
                 onClick={() => setStep(4)}
               >
                 Next: KYC Uploads →
@@ -469,6 +499,10 @@ export default function Apply() {
               <div className="review-row">
                 <span>Purpose</span>
                 <strong>{purpose}</strong>
+              </div>
+              <div className="review-row">
+                <span>Disbursement</span>
+                <strong>{disbursementMethod.toUpperCase()} ({accountNumber})</strong>
               </div>
               <div className="review-row">
                 <span>NRC Number</span>
