@@ -1,4 +1,13 @@
 import { useState } from 'react';
+import { 
+  BarChart3, 
+  Search, 
+  Filter, 
+  Users, 
+  Clock, 
+  CheckCircle, 
+  MoreHorizontal 
+} from 'lucide-react';
 import { fmtZMK } from './formatters';
 import './Admin.css';
 
@@ -21,7 +30,13 @@ const mockApplications: Application[] = [
 ];
 
 export default function Admin() {
-  const [apps] = useState(mockApplications);
+  const [searchTerm, setSearchBar] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+
+  const filteredApps = mockApplications.filter(app => 
+    (statusFilter === 'All' || app.status === statusFilter) &&
+    (app.applicant.includes(searchTerm) || app.id.includes(searchTerm))
+  );
 
   return (
     <div className="admin-root fade-in">
@@ -36,22 +51,52 @@ export default function Admin() {
           rel="noreferrer"
           className="sheet-link-btn"
         >
-          📊 Open Google Sheet
+          <BarChart3 size={18} /> Open Google Sheet
         </a>
       </div>
 
       <div className="admin-stats-grid">
-        <div className="admin-stat-card">
-          <span className="stat-title">New Today</span>
-          <span className="stat-count">12</span>
+        <div className="admin-stat-card elevation">
+          <div className="stat-icon-wrap primary"><Users size={20} /></div>
+          <div className="stat-data">
+            <span className="stat-title">New Today</span>
+            <span className="stat-count">12</span>
+          </div>
         </div>
-        <div className="admin-stat-card">
-          <span className="stat-title">Pending KYC</span>
-          <span className="stat-count warning">5</span>
+        <div className="admin-stat-card elevation">
+          <div className="stat-icon-wrap warning"><Clock size={20} /></div>
+          <div className="stat-data">
+            <span className="stat-title">Pending KYC</span>
+            <span className="stat-count warning">5</span>
+          </div>
         </div>
-        <div className="admin-stat-card">
-          <span className="stat-title">Total Disbursed</span>
-          <span className="stat-count success">K 42,500</span>
+        <div className="admin-stat-card elevation">
+          <div className="stat-icon-wrap success"><CheckCircle size={20} /></div>
+          <div className="stat-data">
+            <span className="stat-title">Total Disbursed</span>
+            <span className="stat-count success">{fmtZMK(42500)}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="table-controls">
+        <div className="search-box">
+          <Search size={18} />
+          <input 
+            type="text" 
+            placeholder="Search by ID or Phone..." 
+            value={searchTerm}
+            onChange={(e) => setSearchBar(e.target.value)}
+          />
+        </div>
+        <div className="filter-group">
+          <Filter size={18} />
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <option value="All">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
         </div>
       </div>
 
@@ -69,7 +114,7 @@ export default function Admin() {
             </tr>
           </thead>
           <tbody>
-            {apps.map(app => (
+            {filteredApps.map(app => (
               <tr key={app.id}>
                 <td className="font-mono">{app.id}</td>
                 <td>{app.applicant}</td>
@@ -82,7 +127,7 @@ export default function Admin() {
                   <span className={`status-tag ${app.status.toLowerCase()}`}>{app.status}</span>
                 </td>
                 <td>
-                  <button className="review-btn">Review</button>
+                  <button className="review-btn"><MoreHorizontal size={16} /></button>
                 </td>
               </tr>
             ))}

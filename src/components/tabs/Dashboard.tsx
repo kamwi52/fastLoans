@@ -1,4 +1,10 @@
 import { useState, useEffect } from 'react';
+import { 
+  Menu,
+  ChevronLeft,
+  ShieldCheck
+} from 'lucide-react';
+import Sidebar from './Sidebar';
 import Overview from './Overview';
 import Loans from './Loans';
 import Payments from './Payments';
@@ -59,19 +65,14 @@ export default function Dashboard() {
   const isAdmin = user.role === 'admin';
 
   const [activeTab, setActiveTab] = useState<string>(isAdmin ? 'admin' : 'overview');
-  // Initialize sidebar states based on viewport
+  // Initialize sidebar state based on viewport
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1024);
-  const [isRightSidebarOpen, setRightSidebarOpen] = useState(window.innerWidth > 1400);
 
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      // Auto-collapse sidebars on smaller screens
       if (width < 1024) {
         setSidebarOpen(false);
-      }
-      if (width < 1400) {
-        setRightSidebarOpen(false);
       }
     };
     window.addEventListener('resize', handleResize);
@@ -107,95 +108,24 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      <div className={`sidebar-overlay ${(isSidebarOpen || (isAdmin && isRightSidebarOpen)) ? 'show' : ''}`} 
-           onClick={() => { setSidebarOpen(false); setRightSidebarOpen(false); }} />
-      
-      {/* LEFT SIDEBAR */}
-      <aside className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
-        <div className="logo">FastLoans</div>
-        <nav>
-          {isAdmin && (
-            <button className={activeTab === 'admin' ? 'active' : ''} onClick={() => { setActiveTab('admin'); setSidebarOpen(false); }}>🛡️ Admin Console</button>
-          )}
-          <button className={activeTab === 'overview' ? 'active' : ''} onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}>📊 Overview</button>
-          {!isAdmin && (
-            <>
-              <button className={activeTab === 'loans' ? 'active' : ''} onClick={() => { setActiveTab('loans'); setSidebarOpen(false); }}>💼 My Loans</button>
-              <button className={activeTab === 'payments' ? 'active' : ''} onClick={() => { setActiveTab('payments'); setSidebarOpen(false); }}>💸 Payments</button>
-              <button className={activeTab === 'apply' ? 'active' : ''} onClick={() => { setActiveTab('apply'); setSidebarOpen(false); }}>📝 Apply Now</button>
-            </>
-          )}
-          <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => { setActiveTab('profile'); setSidebarOpen(false); }}>👤 Profile</button>
-        </nav>
-        <button className="logout-btn" onClick={logout}>🚪 Logout</button>
-      </aside>
+      <Sidebar 
+        isOpen={isSidebarOpen}
+        isAdmin={isAdmin}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        user={user}
+        logout={logout}
+      />
+
       <main className="content">
         <div className="content-container">
-          <header className="content-header">
-            <div className="header-left">
-              <button className="pane-toggle left" onClick={() => setSidebarOpen(!isSidebarOpen)}>
-                {isSidebarOpen ? '◀' : '☰'}
-              </button>
-              <div className="header-titles">
-                <h1>Welcome, {user.name.split(' ')[0]}!</h1>
-                <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-              </div>
-            </div>
-            <div className="header-right">
-              {!isRightSidebarOpen && (
-                <button className="pane-toggle right" onClick={() => setRightSidebarOpen(true)}>⚙️</button>
-              )}
-              <div className="user-profile-mini">
-                <div className="avatar-circle">{(user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase()}</div>
-              </div>
-            </div>
-          </header>
+          <div className="greeting-section">
+            <h1>Welcome, {user.name.split(' ')[0]}!</h1>
+            <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+          </div>
           {renderContent()}
         </div>
       </main>
-
-      {/* RIGHT SIDEBAR */}
-      {isAdmin && (
-      <aside className={`right-sidebar ${isRightSidebarOpen ? 'open' : 'closed'}`}>
-        <div className="sidebar-content">
-          <div className="right-sidebar-header">
-            <h3>Quick Actions</h3>
-            <button className="close-pane" onClick={() => setRightSidebarOpen(false)}>✕</button>
-          </div>
-          
-          <div className="action-stack">
-            <a href={`https://docs.google.com/spreadsheets/d/${import.meta.env.VITE_GOOGLE_SHEET_ID || ''}`} target="_blank" rel="noreferrer" className="pane-btn primary">
-              <span className="button-icon">📊</span> Open Google Sheet
-            </a>
-            <button className="pane-btn">
-              <span className="button-icon">📞</span> Contact Client
-            </button>
-            <button className="pane-btn danger">
-              <span className="button-icon">🚫</span> Reject Application
-            </button>
-          </div>
-
-          <div className="activity-section">
-            <h4 className="activity-title">Recent Activity</h4>
-            <div className="activity-card">
-              <div className="activity-item">
-                <div className="activity-icon info">ℹ️</div>
-                <div className="activity-details">
-                  <p>System Update</p>
-                  <small>2 hours ago</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button 
-          className="pane-toggle right-float" 
-          onClick={() => setRightSidebarOpen(!isRightSidebarOpen)}
-        >
-          {isRightSidebarOpen ? '▶' : '⚙️'}
-        </button>
-      </aside>
-      )}
     </div>
   );
 }

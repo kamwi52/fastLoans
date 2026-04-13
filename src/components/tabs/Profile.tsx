@@ -1,5 +1,20 @@
 import { useState, useRef } from 'react';
 import type { User } from '../../types';
+import { 
+  UserCircle, 
+  Contact2, 
+  Briefcase, 
+  Landmark, 
+  Home, 
+  CheckCircle2, 
+  Pencil, 
+  Save, 
+  Key, 
+  Smartphone, 
+  Bell, 
+  ClipboardList, 
+  Clock 
+} from 'lucide-react';
 import './Profile.css';
 
 interface ProfileProps {
@@ -16,10 +31,10 @@ export default function Profile({ user }: ProfileProps) {
   const [currentDocName, setCurrentDocName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [docs, setDocs] = useState([
-    { name: 'Identity Document (ID)', status: 'Verified', icon: '🪪' },
-    { name: 'Proof of Income', status: 'Verified', icon: '💼' },
-    { name: 'Bank Statement (3 months)', status: 'Verified', icon: '🏦' },
-    { name: 'Proof of Residence', status: 'Pending', icon: '🏠' },
+    { name: 'Identity Document (ID)', status: 'Verified', icon: <Contact2 size={20} /> },
+    { name: 'Proof of Income', status: 'Verified', icon: <Briefcase size={20} /> },
+    { name: 'Bank Statement (3 months)', status: 'Verified', icon: <Landmark size={20} /> },
+    { name: 'Proof of Residence', status: 'Pending', icon: <Home size={20} /> },
   ]);
 
   const handleUploadClick = (docName: string) => {
@@ -94,8 +109,8 @@ export default function Profile({ user }: ProfileProps) {
           <p className="profile-account-id">Account: {user.accountNumber}</p>
           <p className="profile-member-since">Member since January 2024</p>
           <div className="profile-badges">
-            <span className="profile-badge verified">✅ Identity Verified</span>
-            <span className="profile-badge active">🟢 Account Active</span>
+            <span className="profile-badge verified"><CheckCircle2 size={14} /> Identity Verified</span>
+            <span className="profile-badge active"><span className="status-dot"></span> Account Active</span>
           </div>
         </div>
         <div className="profile-credit-widget">
@@ -121,11 +136,11 @@ export default function Profile({ user }: ProfileProps) {
       <div className="profile-body">
         {/* Personal Information */}
         <div className="profile-section-card">
-          <div className="profile-section-header">
+          <div className="profile-section-header border-bottom">
             <h3>Personal Information</h3>
             {!editing && (
               <button className="edit-btn" onClick={() => setEditing(true)}>
-                ✏️ Edit
+                <Pencil size={14} /> Edit
               </button>
             )}
           </div>
@@ -182,7 +197,7 @@ export default function Profile({ user }: ProfileProps) {
                 </div>
               </div>
               <div className="profile-edit-actions">
-                <button type="submit" className="save-btn">💾 Save Changes</button>
+                <button type="submit" className="save-btn"><Save size={16} /> Save Changes</button>
                 <button type="button" className="cancel-btn" onClick={() => setEditing(false)}>
                   Cancel
                 </button>
@@ -224,7 +239,7 @@ export default function Profile({ user }: ProfileProps) {
           <div className="security-list">
             <div className="security-item">
               <div className="security-left">
-                <span className="security-icon">🔑</span>
+                <span className="security-icon"><Key size={20} /></span>
                 <div>
                   <strong>Password</strong>
                   <p>Last changed 3 months ago</p>
@@ -234,27 +249,27 @@ export default function Profile({ user }: ProfileProps) {
             </div>
             <div className="security-item">
               <div className="security-left">
-                <span className="security-icon">📱</span>
+                <span className="security-icon"><Smartphone size={20} /></span>
                 <div>
                   <strong>Two-Factor Authentication</strong>
                   <p>Enabled via SMS OTP</p>
                 </div>
               </div>
-              <span className="security-enabled">✅ Enabled</span>
+              <span className="security-enabled"><CheckCircle2 size={14} /> Enabled</span>
             </div>
             <div className="security-item">
               <div className="security-left">
-                <span className="security-icon">🔔</span>
+                <span className="security-icon"><Bell size={20} /></span>
                 <div>
                   <strong>Payment Notifications</strong>
                   <p>Email & SMS alerts active</p>
                 </div>
               </div>
-              <span className="security-enabled">✅ Active</span>
+              <span className="security-enabled"><CheckCircle2 size={14} /> Active</span>
             </div>
             <div className="security-item">
               <div className="security-left">
-                <span className="security-icon">📋</span>
+                <span className="security-icon"><ClipboardList size={20} /></span>
                 <div>
                   <strong>Login Sessions</strong>
                   <p>1 active session</p>
@@ -275,7 +290,7 @@ export default function Profile({ user }: ProfileProps) {
                 <span className="doc-name">{doc.name}</span>
                 <div className="doc-actions">
                   <span className={`doc-status ${doc.status.toLowerCase()}`}>
-                    {doc.status === 'Verified' ? '✅' : '⏳'} {doc.status}
+                    {doc.status === 'Verified' ? <CheckCircle2 size={14} /> : <Clock size={14} />} {doc.status}
                   </span>
                   {doc.status === 'Pending' && (
                     <button 

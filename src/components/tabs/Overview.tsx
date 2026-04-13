@@ -1,4 +1,15 @@
 import type { User, Loan, Transaction } from '../../types';
+import { 
+  Banknote, 
+  TrendingDown, 
+  Calendar, 
+  Star, 
+  ArrowDownLeft, 
+  Wallet, 
+  FilePlus, 
+  FileText, 
+  UserCircle 
+} from 'lucide-react';
 import { fmtZMK, formatDate } from './formatters';
 import './Overview.css';
 
@@ -10,7 +21,7 @@ interface OverviewProps {
 }
 
 const statusColor: Record<string, string> = {
-  Active: '#10b981',
+  Active: '#0F6E56',
   Pending: '#f59e0b',
   Closed: '#6b7280',
   Overdue: '#ef4444',
@@ -28,7 +39,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
 
   const creditColor =
     user.creditScore >= 750
-      ? '#10b981'
+      ? '#0F6E56'
       : user.creditScore >= 650
       ? '#f59e0b'
       : '#ef4444';
@@ -40,7 +51,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
       {/* Summary Cards */}
       <div className="summary-grid">
         <div className="summary-card primary">
-          <div className="summary-icon">💰</div>
+          <div className="summary-icon"><Banknote size={20} /></div>
           <div className="summary-body">
             <span className="summary-label">Total Borrowed</span>
             <span className="summary-value">{fmtZMK(totalBorrowed)}</span>
@@ -49,7 +60,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
         </div>
 
         <div className="summary-card warning">
-          <div className="summary-icon">📉</div>
+          <div className="summary-icon"><TrendingDown size={20} /></div>
           <div className="summary-body">
             <span className="summary-label">Outstanding Balance</span>
             <span className="summary-value">{fmtZMK(totalOutstanding)}</span>
@@ -58,7 +69,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
         </div>
 
         <div className="summary-card success">
-          <div className="summary-icon">📅</div>
+          <div className="summary-icon"><Calendar size={20} /></div>
           <div className="summary-body">
             <span className="summary-label">Monthly Repayments</span>
             <span className="summary-value">{fmtZMK(totalMonthlyDue)}</span>
@@ -67,7 +78,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
         </div>
 
         <div className="summary-card info">
-          <div className="summary-icon">⭐</div>
+          <div className="summary-icon"><Star size={20} /></div>
           <div className="summary-body">
             <span className="summary-label">Credit Score</span>
             <span className="summary-value" style={{ color: creditColor }}>
@@ -143,7 +154,7 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
           <div className="txn-list">
             {transactions.slice(0, 5).map((txn) => (
               <div key={txn.id} className="txn-row">
-                <div className="txn-icon debit">💸</div>
+                <div className="txn-icon debit"><ArrowDownLeft size={16} /></div>
                 <div className="txn-info">
                   <span className="txn-desc">{txn.description}</span>
                   <span className="txn-date">{formatDate(txn.date)}</span>
@@ -161,16 +172,16 @@ export default function Overview({ user, loans, transactions, onTabChange }: Ove
           <h3>Quick Actions</h3>
           <div className="action-grid">
             <button className="action-btn" onClick={() => onTabChange('payments')}>
-              <span>💸</span> Make Payment
+              <Wallet size={18} /> Make Payment
             </button>
             <button className="action-btn" onClick={() => onTabChange('apply')}>
-              <span>📝</span> Apply for Loan
+              <FilePlus size={18} /> Apply for Loan
             </button>
             <button className="action-btn" onClick={() => onTabChange('loans')}>
-              <span>📄</span> View Statements
+              <FileText size={18} /> View Statements
             </button>
             <button className="action-btn" onClick={() => onTabChange('profile')}>
-              <span>👤</span> Update Profile
+              <UserCircle size={18} /> Update Profile
             </button>
           </div>
         </div>

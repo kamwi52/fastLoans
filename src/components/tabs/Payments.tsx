@@ -1,5 +1,13 @@
 import { useState } from 'react';
 import type { Transaction, Loan } from '../../types';
+import { 
+  Smartphone, 
+  Zap, 
+  Landmark, 
+  TreePine, 
+  CheckCircle2, 
+  Wallet 
+} from 'lucide-react';
 import { fmtZMK, formatDate } from './formatters';
 import './Payments.css';
 
@@ -115,7 +123,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
                     checked={paymentMethod === 'momo'} 
                     onChange={() => setPaymentMethod('momo')} 
                   />
-                  <span>📱 Mobile Money (MTN/Airtel/Zamtel)</span>
+                  <span><Smartphone size={16} /> Mobile Money (MTN/Airtel/Zamtel)</span>
                 </label>
                 <label className={`pay-method ${paymentMethod === 'xapit' ? 'active' : ''}`}>
                   <input 
@@ -124,7 +132,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
                     checked={paymentMethod === 'xapit'} 
                     onChange={() => setPaymentMethod('xapit')} 
                   />
-                  <span>🇿 Zanaco Xapit</span>
+                  <span><Zap size={16} /> Zanaco Xapit</span>
                 </label>
                 <label className={`pay-method ${paymentMethod === 'fnb' ? 'active' : ''}`}>
                   <input 
@@ -133,7 +141,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
                     checked={paymentMethod === 'fnb'} 
                     onChange={() => setPaymentMethod('fnb')} 
                   />
-                  <span>🌳 FNB Bank</span>
+                  <span><TreePine size={16} /> FNB Bank</span>
                 </label>
                 <label className={`pay-method ${paymentMethod === 'indo' ? 'active' : ''}`}>
                   <input 
@@ -142,7 +150,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
                     checked={paymentMethod === 'indo'} 
                     onChange={() => setPaymentMethod('indo')} 
                   />
-                  <span>🏦 Indo Zambia Bank</span>
+                  <span><Landmark size={16} /> Indo Zambia Bank</span>
                 </label>
               </div>
             </div>
@@ -155,7 +163,7 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
               {payLoading ? (
                 <><span className="spinner"></span> Processing…</>
               ) : (
-                '💸 Submit Payment'
+                <><Wallet size={18} /> Submit Payment</>
               )}
             </button>
           </form>

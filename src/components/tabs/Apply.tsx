@@ -1,5 +1,17 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { 
+  User, 
+  Building2, 
+  GraduationCap, 
+  Car, 
+  PartyPopper, 
+  CheckCircle2, 
+  ChevronRight, 
+  ArrowRight, 
+  ArrowLeft, 
+  Rocket 
+} from 'lucide-react';
 import './Apply.css';
 
 type Step = 1 | 2 | 3 | 4 | 5;
@@ -8,7 +20,7 @@ const loanProducts = [
   {
     id: 'personal',
     name: 'Personal Loan',
-    icon: '👤',
+    icon: <User size={24} />,
     rate: '12.5%',
     max: 'K 5,000',
     term: '6 – 60 months',
@@ -17,7 +29,7 @@ const loanProducts = [
   {
     id: 'business',
     name: 'Business Loan',
-    icon: '🏢',
+    icon: <Building2 size={24} />,
     rate: '10.5%',
     max: 'K 10,000',
     term: '12 – 84 months',
@@ -26,7 +38,7 @@ const loanProducts = [
   {
     id: 'education',
     name: 'Education Loan',
-    icon: '🎓',
+    icon: <GraduationCap size={24} />,
     rate: '8.5%',
     max: 'K 3,500',
     term: '12 – 120 months',
@@ -35,7 +47,7 @@ const loanProducts = [
   {
     id: 'auto',
     name: 'Auto Loan',
-    icon: '🚗',
+    icon: <Car size={24} />,
     rate: '11.5%',
     max: 'K 7,500',
     term: '12 – 72 months',
@@ -127,7 +139,7 @@ export default function Apply() {
     return (
       <div className="apply-root">
         <div className="apply-success">
-          <div className="success-icon">🎉</div>
+          <div className="success-icon"><PartyPopper size={64} color={theme.primary} /></div>
           <h2>Application Submitted!</h2>
           <div className="kyc-badge success" style={{ 
             backgroundColor: '#e8f5e9', 
@@ -135,8 +147,13 @@ export default function Apply() {
             padding: '0.5rem', 
             borderRadius: '8px', 
             marginBottom: '1rem',
-            fontSize: '0.9rem'
-          }}>✅ KYC Documents Verified</div>
+            fontSize: '0.9rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            <CheckCircle2 size={16} /> KYC Documents Verified
+          </div>
           <p>
             Your {selectedLoan?.name} application for{' '}
             <strong>K {Number(loanAmount).toLocaleString('en-ZM')}</strong> has been received.
@@ -152,7 +169,7 @@ export default function Apply() {
             style={{ backgroundColor: theme.primary }}
             onClick={() => { setSubmitted(false); setStep(1); setSelectedProduct(''); setLoanAmount(''); }}
           >
-            Apply for Another Loan
+            <Rocket size={18} /> Apply for Another Loan
           </button>
         </div>
       </div>
@@ -170,7 +187,7 @@ export default function Apply() {
       <div className="step-indicator">
         {[1, 2, 3, 4, 5].map((s) => (
           <div key={s} className={`step-item ${step >= s ? 'active' : ''} ${step > s ? 'done' : ''}`} style={{ transition: 'opacity 0.3s ease' }}>
-            <div className="step-circle" style={step >= s ? { backgroundColor: theme.primary, borderColor: theme.primary } : {}}>{step > s ? '✓' : s}</div>
+            <div className="step-circle" style={step >= s ? { backgroundColor: theme.primary, borderColor: theme.primary } : {}}>{step > s ? <CheckCircle2 size={18} /> : s}</div>
             <span className="step-label">
               {s === 1 ? 'Product' : s === 2 ? 'Amount' : s === 3 ? 'Details' : s === 4 ? 'KYC' : 'Review'}
             </span>
@@ -222,7 +239,7 @@ export default function Apply() {
                 disabled={!selectedProduct}
                 onClick={() => setStep(2)}
               >
-                Next: Loan Amount →
+                Next: Loan Amount <ChevronRight size={18} />
               </button>
             </div>
           </div>
@@ -287,14 +304,14 @@ export default function Apply() {
               )}
             </div>
             <div className="step-actions">
-              <button className="step-back-btn" onClick={() => setStep(1)}>← Back</button>
+              <button className="step-back-btn" onClick={() => setStep(1)}><ArrowLeft size={18} /> Back</button>
               <button
                 className="step-next-btn"
                 style={{ backgroundColor: theme.primary }}
                 disabled={!loanAmount}
                 onClick={() => setStep(3)}
               >
-                Next: Your Details →
+                Next: Your Details <ChevronRight size={18} />
               </button>
             </div>
           </div>
@@ -398,14 +415,14 @@ export default function Apply() {
               </div>
             </div>
             <div className="step-actions">
-              <button className="step-back-btn" onClick={() => setStep(2)}>← Back</button>
+              <button className="step-back-btn" onClick={() => setStep(2)}><ArrowLeft size={18} /> Back</button>
               <button
                 className="step-next-btn"
                 style={{ backgroundColor: theme.primary }}
                 disabled={!purpose || !disbursementMethod || !accountNumber}
                 onClick={() => setStep(4)}
               >
-                Next: KYC Uploads →
+                Next: KYC Uploads <ChevronRight size={18} />
               </button>
             </div>
           </div>
@@ -521,7 +538,7 @@ export default function Apply() {
               ⚠️ This is an indicative quote. Final terms are subject to credit assessment and approval.
             </div>
             <div className="step-actions">
-              <button className="step-back-btn" onClick={() => setStep(4)}>← Back</button>
+              <button className="step-back-btn" onClick={() => setStep(4)}><ArrowLeft size={18} /> Back</button>
               <button
                 className={`step-submit-btn ${submitting ? 'loading' : ''}`}
                 style={{ backgroundColor: theme.primary }}
@@ -531,7 +548,7 @@ export default function Apply() {
                 {submitting ? (
                   <><span className="spinner"></span> Submitting…</>
                 ) : (
-                  '🚀 Submit Application'
+                  <><Rocket size={18} /> Submit Application</>
                 )}
               </button>
             </div>

@@ -1,5 +1,15 @@
 import { useState } from 'react';
 import type { Loan } from '../../types';
+import { 
+  User, 
+  Building2, 
+  Home, 
+  Car, 
+  GraduationCap, 
+  Inbox, 
+  ChevronUp, 
+  ChevronDown 
+} from 'lucide-react';
 import { fmtZMK, formatDate } from './formatters';
 import './Loans.css';
 
@@ -14,12 +24,12 @@ const statusColor: Record<string, string> = {
   Overdue: '#ef4444',
 };
 
-const loanTypeIcon: Record<string, string> = {
-  Personal: '👤',
-  Business: '🏢',
-  Mortgage: '🏠',
-  Auto: '🚗',
-  Education: '🎓',
+const loanTypeIcon: Record<string, React.ReactNode> = {
+  Personal: <User size={20} />,
+  Business: <Building2 size={20} />,
+  Mortgage: <Home size={20} />,
+  Auto: <Car size={20} />,
+  Education: <GraduationCap size={20} />,
 };
 
 export default function Loans({ loans }: LoansProps) {
@@ -48,7 +58,7 @@ export default function Loans({ loans }: LoansProps) {
       <div className="loans-list">
         {filtered.length === 0 && (
           <div className="loans-empty">
-            <span>📭</span>
+            <Inbox size={48} color="var(--text-muted)" />
             <p>No loans found for this filter.</p>
           </div>
         )}
@@ -76,7 +86,9 @@ export default function Loans({ loans }: LoansProps) {
                 >
                   {loan.status}
                 </span>
-                <span className="loan-expand-icon">{expanded === loan.id ? '▲' : '▼'}</span>
+                <span className="loan-expand-icon">
+                  {expanded === loan.id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                </span>
               </div>
             </div>
 

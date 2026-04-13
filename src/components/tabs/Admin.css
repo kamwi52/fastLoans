@@ -16,12 +16,13 @@
 .admin-header h2 {
   margin: 0;
   font-size: 1.75rem;
-  color: #333;
+  font-weight: 800;
+  color: var(--text-h);
 }
 
 .admin-header p {
-  color: #9e9e9e;
-  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 .sheet-link-btn {
@@ -44,8 +45,9 @@
 .admin-stat-card {
   background: white;
   padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -68,10 +70,81 @@
 .stat-count.warning { color: #f59e0b; }
 .stat-count.success { color: #10b981; }
 
+.stat-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.stat-icon-wrap.primary { background: var(--accent-bg); color: var(--accent); }
+.stat-icon-wrap.warning { background: #fffbeb; color: #d97706; }
+.stat-icon-wrap.success { background: #ecfdf5; color: #059669; }
+
+.admin-stat-card.elevation {
+  flex-direction: row;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.admin-stat-card.elevation:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.table-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 280px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 1rem;
+}
+
+.search-box input {
+  border: none;
+  padding: 0.75rem;
+  width: 100%;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 1rem;
+}
+
+.filter-group select {
+  border: none;
+  padding: 0.75rem 0;
+  outline: none;
+  font-weight: 600;
+  color: var(--text);
+}
+
 .admin-table-wrapper {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
   overflow-x: auto;
 }
 

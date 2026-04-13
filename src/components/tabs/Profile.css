@@ -8,8 +8,8 @@
 .profile-hero {
   background: white;
   padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   display: flex;
   align-items: center;
   gap: 2.5rem;
@@ -64,6 +64,20 @@
 
 .profile-badge.verified { background: #e8f5e9; color: #2e7d32; }
 .profile-badge.active { background: #e3f2fd; color: #1565c0; }
+
+.profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+}
 
 /* Credit Widget */
 .profile-credit-widget {
@@ -121,9 +135,10 @@
 .profile-section-card {
   background: white;
   padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
   margin-bottom: 1.5rem;
+  border: 1px solid var(--border);
 }
 
 .profile-section-header {
@@ -131,6 +146,11 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.profile-section-header.border-bottom {
+  border-bottom: 1px solid var(--border);
 }
 
 .profile-section-card h3 {

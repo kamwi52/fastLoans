@@ -41,7 +41,7 @@
   font-size: 1.5rem;
 }
 
-.summary-card.primary .summary-icon { background: #eff6ff; color: #2563eb; }
+.summary-card.primary .summary-icon { background: #E1F5EE; color: #0F6E56; }
 .summary-card.warning .summary-icon { background: #fffbeb; color: #d97706; }
 .summary-card.success .summary-icon { background: #ecfdf5; color: #059669; }
 .summary-card.info .summary-icon { background: #f0f9ff; color: #0284c7; }
@@ -101,7 +101,7 @@
 .view-all-btn {
   background: none;
   border: none;
-  color: #6495ed;
+  color: var(--accent);
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
@@ -122,8 +122,8 @@
 }
 
 .loan-type-badge {
-  background: #f0f7ff;
-  color: #6495ed;
+  background: #E1F5EE;
+  color: #0F6E56;
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
   font-size: 0.75rem;
@@ -171,7 +171,7 @@
 
 .loan-progress-fill {
   height: 100%;
-  background: #6495ed;
+  background: var(--accent);
 }
 
 .loan-progress-label {
@@ -250,9 +250,9 @@
 }
 
 .action-btn:hover {
-  background: #f0f7ff;
-  border-color: #6495ed;
-  color: #6495ed;
+  background: #E1F5EE;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 @media (max-width: 900px) {
