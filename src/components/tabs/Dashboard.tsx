@@ -59,14 +59,20 @@ export default function Dashboard() {
   const isAdmin = user.role === 'admin';
 
   const [activeTab, setActiveTab] = useState<string>(isAdmin ? 'admin' : 'overview');
-  // Initialize sidebar states based on viewport to ensure a clean mobile landing
-  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1023);
-  const [isRightSidebarOpen, setRightSidebarOpen] = useState(window.innerWidth > 1200);
+  // Initialize sidebar states based on viewport
+  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1024);
+  const [isRightSidebarOpen, setRightSidebarOpen] = useState(window.innerWidth > 1400);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 1024) setSidebarOpen(false);
-      if (window.innerWidth < 1200) setRightSidebarOpen(false);
+      const width = window.innerWidth;
+      // Auto-collapse sidebars on smaller screens
+      if (width < 1024) {
+        setSidebarOpen(false);
+      }
+      if (width < 1400) {
+        setRightSidebarOpen(false);
+      }
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
