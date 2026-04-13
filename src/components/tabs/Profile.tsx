@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import type { User } from '../../types';
 import { 
-  UserCircle, 
   Contact2, 
   Briefcase, 
   Landmark, 

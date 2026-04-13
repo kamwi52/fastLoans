@@ -5,7 +5,6 @@ import {
   Zap, 
   Landmark, 
   TreePine, 
-  CheckCircle2, 
   Wallet 
 } from 'lucide-react';
 import { fmtZMK, formatDate } from './formatters';

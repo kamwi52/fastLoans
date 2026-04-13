@@ -1,9 +1,4 @@
 import { useState, useEffect } from 'react';
-import { 
-  Menu,
-  ChevronLeft,
-  ShieldCheck
-} from 'lucide-react';
 import Sidebar from './Sidebar';
 import Overview from './Overview';
 import Loans from './Loans';
