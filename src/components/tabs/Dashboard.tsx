@@ -58,9 +58,19 @@ export default function Dashboard() {
   const user = authUser || mockUser;
   const isAdmin = user.role === 'admin';
 
-  const [activeTab, setActiveTab] = useState(isAdmin ? 'admin' : 'overview');
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [isRightSidebarOpen, setRightSidebarOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState<string>(isAdmin ? 'admin' : 'overview');
+  // Initialize sidebar states based on viewport to ensure a clean mobile landing
+  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1023);
+  const [isRightSidebarOpen, setRightSidebarOpen] = useState(window.innerWidth > 1200);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) setSidebarOpen(false);
+      if (window.innerWidth < 1200) setRightSidebarOpen(false);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Sync active tab if user role changes (e.g. on initial load from context)
   useEffect(() => {
@@ -117,9 +127,13 @@ export default function Dashboard() {
         <div className="content-container">
           <header className="content-header">
             <div className="header-left">
-              <button className="pane-toggle left" onClick={() => setSidebarOpen(!isSidebarOpen)}>{isSidebarOpen ? '◀' : '☰'}</button>
-              <h1>Welcome, {user.name.split(' ')[0]}!</h1>
-              <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+              <button className="pane-toggle left" onClick={() => setSidebarOpen(!isSidebarOpen)}>
+                {isSidebarOpen ? '◀' : '☰'}
+              </button>
+              <div className="header-titles">
+                <h1>Welcome, {user.name.split(' ')[0]}!</h1>
+                <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+              </div>
             </div>
             <div className="header-right">
               {!isRightSidebarOpen && (

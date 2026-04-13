@@ -388,8 +388,8 @@ export default function Apply() {
             <p style={{ color: '#666', marginBottom: '2rem' }}>Please upload your supporting documents to verify your identity.</p>
             
             <div className="kyc-upload-grid" style={{ display: 'grid', gap: '1.5rem' }}>
-              <div className="kyc-upload-card" style={{ padding: '1.5rem', border: '1px solid #e0e0e0', borderRadius: '12px', background: '#fff' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div className="kyc-upload-card" style={{ padding: '1.25rem', border: '1px solid #e0e0e0', borderRadius: '12px', background: '#fff' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                   <div>
                     <h4 style={{ margin: 0 }}>Identity Document (NRC)</h4>
                     <p style={{ fontSize: '0.85rem', color: '#9e9e9e', margin: '4px 0 0' }}>Clear photo or PDF of your NRC</p>
@@ -409,8 +409,8 @@ export default function Apply() {
                 </div>
               </div>
 
-              <div className="kyc-upload-card" style={{ padding: '1.5rem', border: '1px solid #e0e0e0', borderRadius: '12px', background: '#fff' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div className="kyc-upload-card" style={{ padding: '1.25rem', border: '1px solid #e0e0e0', borderRadius: '12px', background: '#fff' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                   <div>
                     <h4 style={{ margin: 0 }}>Proof of Residence</h4>
                     <p style={{ fontSize: '0.85rem', color: '#9e9e9e', margin: '4px 0 0' }}>Utility bill or lease agreement</p>
