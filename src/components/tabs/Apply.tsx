@@ -8,7 +8,6 @@ import {
   PartyPopper, 
   CheckCircle2, 
   ChevronRight, 
-  ArrowRight, 
   ArrowLeft, 
   Rocket 
 } from 'lucide-react';
