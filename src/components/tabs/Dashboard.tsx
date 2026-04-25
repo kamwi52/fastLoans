@@ -114,6 +114,9 @@ export default function Dashboard() {
 
       <main className="content">
         <div className="content-container">
+          <div className="company-header">
+            <span className="company-name">Mulonga Group</span>
+          </div>
           <div className="greeting-section">
             <h1>Welcome, {user.name.split(' ')[0]}!</h1>
             <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>

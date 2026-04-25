@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
+  /* New Color Palette */
+  --color-accent: #2ECC71; /* Emerald - Primary CTA/Buttons */
+  --color-brand: #0D6EBB; /* Ocean - Brand/Links/Navigation */
+  --color-gradient-start: #2ECC71; /* Emerald */
+  --color-gradient-end: #0D6EBB; /* Ocean */
+  
+  /* Semantic tokens */
   --text: #374151;
   --text-h: #111827;
   --text-muted: #94a3b8;
@@ -8,9 +15,11 @@
   --bg-subtle: #F8FAFC;
   --border: #e2e8f0;
   --code-bg: #f4f3ec;
-  --accent: #0F6E56;
-  --accent-bg: rgba(15, 110, 86, 0.1);
-  --accent-border: rgba(15, 110, 86, 0.5);
+  --accent: #2ECC71; /* Updated to Emerald */
+  --accent-bg: rgba(46, 204, 113, 0.1); /* Emerald with transparency */
+  --accent-border: rgba(46, 204, 113, 0.5); /* Emerald border */
+  --brand: #0D6EBB; /* Ocean */
+  --brand-bg: rgba(13, 110, 187, 0.1); /* Ocean with transparency */
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -40,9 +49,12 @@
     --bg: #16171d;
     --border: #2e303a;
     --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
+    /* Keep new palette consistent in dark mode */
+    --accent: #2ECC71; /* Emerald */
+    --accent-bg: rgba(46, 204, 113, 0.15);
+    --accent-border: rgba(46, 204, 113, 0.5);
+    --brand: #0D6EBB; /* Ocean */
+    --brand-bg: rgba(13, 110, 187, 0.15);
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;

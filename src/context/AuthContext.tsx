@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       name: isAdmin ? 'Admin System' : 'John Doe',
       accountNumber: isAdmin ? 'ADMIN-001' : 'ZM-882910',
       phone: phone,
-      email: isAdmin ? 'admin@fastloans.com' : 'john.doe@example.com',
+      email: isAdmin ? 'admin@targeteveryone.com' : 'john.doe@example.com',
       creditScore: isAdmin ? 850 : 720,
       role: isAdmin ? 'admin' : 'client',
     };

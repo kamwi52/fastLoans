@@ -8,7 +8,9 @@ import {
   GraduationCap, 
   Inbox, 
   ChevronUp, 
-  ChevronDown 
+  ChevronDown,
+  CreditCard,
+  Download
 } from 'lucide-react';
 import { fmtZMK, formatDate } from './formatters';
 import './Loans.css';
@@ -149,12 +151,21 @@ export default function Loans({ loans }: LoansProps) {
                 <div className="loan-card-actions">
                   {loan.status === 'Active' && (
                     <>
-                      <button className="loan-action-btn primary">💸 Make Payment</button>
-                      <button className="loan-action-btn secondary">📄 Download Statement</button>
+                      <button className="loan-action-btn primary">
+                        <CreditCard size={18} />
+                        Make Payment
+                      </button>
+                      <button className="loan-action-btn secondary">
+                        <Download size={18} />
+                        Download Statement
+                      </button>
                     </>
                   )}
                   {loan.status === 'Closed' && (
-                    <button className="loan-action-btn secondary">📄 Download Statement</button>
+                    <button className="loan-action-btn secondary">
+                      <Download size={18} />
+                      Download Statement
+                    </button>
                   )}
                 </div>
               </div>

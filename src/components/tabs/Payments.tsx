@@ -197,37 +197,27 @@ export default function Payments({ transactions, loans }: PaymentsProps) {
       {/* Transaction History */}
       <div className="txn-history-card">
         <h3>Transaction History</h3>
-        <div className="txn-table-wrap">
-          <table className="txn-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Loan</th>
-                <th>Amount</th>
-                <th>Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((txn) => (
-                <tr key={txn.id}>
-                  <td>{formatDate(txn.date)}</td>
-                  <td>{txn.description}</td>
-                  <td>
-                    <span className="txn-loan-badge">{txn.loanId}</span>
-                  </td>
-                  <td className={`txn-amount ${txn.type}`}>
+        <div className="txn-list">
+          {transactions.map((txn) => (
+            <div key={txn.id} className="txn-card">
+              <div className="txn-card-main">
+                <div className="txn-card-left">
+                  <span className="txn-date">{formatDate(txn.date)}</span>
+                  <p className="txn-desc">{txn.description}</p>
+                </div>
+
+                <div className="txn-card-right">
+                  <span className="txn-loan-badge">{txn.loanId}</span>
+                  <span className={`txn-amount ${txn.type}`}>
                     {txn.type === 'debit' ? '-' : '+'}{fmtZMK(txn.amount)}
-                  </td>
-                  <td>
-                    <span className={`txn-type-badge ${txn.type}`}>
-                      {txn.type === 'debit' ? 'Payment' : 'Credit'}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </span>
+                  <span className={`txn-type-badge ${txn.type}`}>
+                    {txn.type === 'debit' ? 'Payment' : 'Credit'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

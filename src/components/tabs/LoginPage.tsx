@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Aurora from './Aurora';
+import { Phone, Lock, Eye, EyeOff, Shield } from 'lucide-react';
 import './LoginPage.css';
 
 export const LoginPage: React.FC = () => {
@@ -44,29 +45,34 @@ export const LoginPage: React.FC = () => {
       <div className="login-container">
         <div className="login-card fade-in">
           <div className="login-header">
-            <div className="login-logo">FastLoans</div>
+            <div className="login-company">Mulonga Group</div>
+            <div className="login-logo">Target everyone's needs.</div>
             <h1>Secure Access</h1>
             <p>Enter your credentials to manage your loans</p>
           </div>
           
           <form onSubmit={handleSubmit} className="login-form">
-            {error && <div className="login-error-msg" style={{ color: '#ef4444', marginBottom: '1rem', fontSize: '0.9rem' }}>⚠️ {error}</div>}
+            {error && <div className="login-error-msg">⚠️ {error}</div>}
             
             <div className="form-group">
               <label>Phone Number</label>
-              <input
-                type="tel"
-                placeholder="+260 9XX XXX XXX"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                disabled={loading}
-              />
+              <div className="input-icon-wrapper">
+                <Phone size={18} className="input-icon" />
+                <input
+                  type="tel"
+                  placeholder="+260 9XX XXX XXX"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                  disabled={loading}
+                />
+              </div>
             </div>
             
             <div className="form-group">
               <label>Secure PIN</label>
-              <div className="pin-input-wrapper">
+              <div className="input-icon-wrapper pin-wrapper">
+                <Lock size={18} className="input-icon" />
                 <input
                   type={showPin ? 'text' : 'password'}
                   placeholder="••••"
@@ -75,13 +81,15 @@ export const LoginPage: React.FC = () => {
                   onChange={(e) => setPin(e.target.value)}
                   required
                   disabled={loading}
+                  className="pin-input"
                 />
                 <button
                   type="button"
                   className="toggle-pin-btn"
                   onClick={() => setShowPin(!showPin)}
+                  tabIndex={-1}
                 >
-                  {showPin ? '👁️' : '🙈'}
+                  {showPin ? <Eye size={18} /> : <EyeOff size={18} />}
                 </button>
               </div>
             </div>
@@ -95,6 +103,11 @@ export const LoginPage: React.FC = () => {
             <a href="#">Forgot PIN?</a>
             <span className="dot-sep">•</span>
             <a href="#">Apply for Account</a>
+          </div>
+
+          <div className="security-badge">
+            <Shield size={14} />
+            <span>SSL Encrypted • Secure Connection</span>
           </div>
         </div>
       </div>

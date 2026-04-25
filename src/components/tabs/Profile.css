@@ -1,5 +1,6 @@
 .profile-root {
-  max-width: 1000px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -21,7 +22,7 @@
 .profile-avatar-large {
   width: 100px;
   height: 100px;
-  background: #6495ed;
+  background: var(--brand); /* Ocean - brand color */
   color: white;
   border-radius: 50%;
   display: flex;
@@ -29,7 +30,7 @@
   justify-content: center;
   font-size: 2.5rem;
   font-weight: 700;
-  box-shadow: 0 8px 15px rgba(100, 149, 237, 0.3);
+  box-shadow: 0 8px 15px rgba(13, 110, 187, 0.3); /* Ocean shadow */
 }
 
 .profile-hero-info h2 {
@@ -74,7 +75,7 @@
 .status-dot {
   width: 8px;
   height: 8px;
-  background-color: #10b981;
+  background-color: var(--accent); /* Emerald - accent color */
   border-radius: 50%;
   display: inline-block;
 }
@@ -99,14 +100,14 @@
   display: block;
   font-size: 2.5rem;
   font-weight: 800;
-  color: #10b981;
+  color: var(--accent); /* Emerald - accent color */
   line-height: 1;
   margin: 0.5rem 0;
 }
 
 .credit-rating {
   font-weight: 600;
-  color: #10b981;
+  color: var(--accent); /* Emerald - accent color */
   font-size: 0.9rem;
 }
 
@@ -121,7 +122,7 @@
 
 .credit-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ff5252, #f59e0b, #10b981);
+  background: linear-gradient(90deg, #ff5252, #f59e0b, var(--accent)); /* Emerald end */
 }
 
 .credit-range {
@@ -219,7 +220,7 @@
   font-weight: 600;
 }
 
-.doc-status.verified { color: #10b981; }
+.doc-status.verified { color: var(--accent); } /* Emerald - accent */
 .doc-status.pending { color: #f59e0b; }
 
 .upload-btn-small {
