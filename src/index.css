@@ -3,9 +3,9 @@
 :root {
   /* New Color Palette */
   --color-accent: #2ECC71; /* Emerald - Primary CTA/Buttons */
-  --color-brand: #0D6EBB; /* Ocean - Brand/Links/Navigation */
+  --color-brand: #084B82; /* Darker Ocean - Brand/Links/Navigation */
   --color-gradient-start: #2ECC71; /* Emerald */
-  --color-gradient-end: #0D6EBB; /* Ocean */
+  --color-gradient-end: #084B82; /* Darker Ocean */
   
   /* Semantic tokens */
   --text: #374151;
@@ -18,8 +18,8 @@
   --accent: #2ECC71; /* Updated to Emerald */
   --accent-bg: rgba(46, 204, 113, 0.1); /* Emerald with transparency */
   --accent-border: rgba(46, 204, 113, 0.5); /* Emerald border */
-  --brand: #0D6EBB; /* Ocean */
-  --brand-bg: rgba(13, 110, 187, 0.1); /* Ocean with transparency */
+  --brand: #084B82; /* Darker Ocean */
+  --brand-bg: rgba(8, 75, 130, 0.1); /* Darker Ocean with transparency */
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -53,8 +53,8 @@
     --accent: #2ECC71; /* Emerald */
     --accent-bg: rgba(46, 204, 113, 0.15);
     --accent-border: rgba(46, 204, 113, 0.5);
-    --brand: #0D6EBB; /* Ocean */
-    --brand-bg: rgba(13, 110, 187, 0.15);
+    --brand: #084B82; /* Darker Ocean */
+    --brand-bg: rgba(8, 75, 130, 0.15);
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;

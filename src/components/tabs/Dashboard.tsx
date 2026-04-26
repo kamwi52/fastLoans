@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Menu } from 'lucide-react';
 import Sidebar from './Sidebar';
 import Overview from './Overview';
 import Loans from './Loans';
@@ -107,6 +108,13 @@ export default function Dashboard() {
       <main className="content">
         <div className="content-container">
           <div className="company-header">
+            <button 
+              className="mobile-menu-btn" 
+              onClick={() => setSidebarOpen(!isSidebarOpen)}
+              aria-label="Toggle Menu"
+            >
+              <Menu size={24} />
+            </button>
             <span className="company-name">Mulonga Group</span>
           </div>
           <div className="greeting-section">

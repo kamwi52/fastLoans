@@ -1,13 +1,39 @@
-﻿/* Enterprise Dashboard Admin Styles */
+﻿/* Enterprise Dashboard Admin & Global Brand Styles */
+
+/* Global Dashboard Brand Overrides - Magic Gradient */
+.dashboard-container {
+  background: linear-gradient(90deg, var(--color-accent), var(--color-brand), var(--color-accent), var(--color-brand)) !important;
+  background-size: 400% 400% !important;
+  animation: gradientShift 15s ease infinite !important;
+  background-attachment: fixed !important;
+  min-height: 100vh;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.company-name, 
+.greeting-section h1, 
+.header-date {
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
 
 .admin-root {
   width: 100%;
-  max-width: 100vw;
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #2ECC71 0%, #0D6EBB 100%);
-  background-attachment: fixed;
+  background: transparent;
   overflow-x: hidden;
   position: relative;
 }
@@ -64,7 +90,8 @@
 .admin-action-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
+  margin-top: 2rem;
   padding: 0 2.5rem 1.5rem;
   margin-bottom: 1rem;
 }
@@ -90,9 +117,9 @@
 }
 
 .admin-action-card.action-primary {
-  background: linear-gradient(135deg, #2ECC71 0%, #0D6EBB 100%);
-  color: white;
-  border-color: transparent;
+  background-color: white;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
 }
 
 .admin-action-card.action-secondary {
@@ -177,7 +204,7 @@
 }
 
 .search-box:focus-within {
-  border-color: #0D6EBB;
+  border-color: #084B82;
   box-shadow: 0 0 0 3px rgba(13, 110, 187, 0.1);
 }
 
@@ -212,7 +239,7 @@
 }
 
 .filter-group:focus-within {
-  border-color: #0D6EBB;
+  border-color: #084B82;
   box-shadow: 0 0 0 3px rgba(13, 110, 187, 0.1);
 }
 
@@ -259,6 +286,10 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-radius: 12px 12px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* List Body */
@@ -345,7 +376,7 @@
 
 .badge-verified {
   background: #e0f2fe;
-  color: #0D6EBB;
+  color: #084B82;
 }
 
 .badge-pending {
@@ -451,7 +482,7 @@
 .admin-crud-form input:focus,
 .admin-crud-form select:focus {
   outline: none;
-  border-color: #0D6EBB;
+  border-color: #084B82;
   box-shadow: 0 0 0 3px rgba(13, 110, 187, 0.1);
 }
 
@@ -526,8 +557,28 @@
   font-size: 0.85rem;
 }
 
+/* Mobile Toggle Styles */
+.mobile-menu-btn {
+  display: none;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-right: 1rem;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .admin-list-header,
   .admin-list-row {
     grid-template-columns: 70px 1fr 1fr 100px 90px 90px 70px;
@@ -548,6 +599,11 @@
     flex-direction: column;
     padding: 1.5rem;
     gap: 1.5rem;
+  }
+
+  .admin-action-card {
+    padding: 1.25rem;
+    font-size: 1rem;
   }
 
   .admin-title-group h2 {
