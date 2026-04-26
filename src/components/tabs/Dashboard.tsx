@@ -73,6 +73,16 @@ export default function Dashboard() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Prevent background scrolling when sidebar is open on mobile
+  useEffect(() => {
+    if (isSidebarOpen && window.innerWidth < 1024) {
+      document.body.classList.add('lock-scroll');
+    } else {
+      document.body.classList.remove('lock-scroll');
+    }
+    return () => document.body.classList.remove('lock-scroll');
+  }, [isSidebarOpen]);
+
   // Sync active tab if user role changes (e.g. on initial load from context)
   useEffect(() => {
     setActiveTab(user.role === 'admin' ? 'admin' : 'overview');
@@ -82,25 +92,39 @@ export default function Dashboard() {
   const displayLoans = isAdmin ? [] : mockLoans;
   const displayTransactions = isAdmin ? [] : mockTransactions;
 
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    // Automatically close sidebar on mobile/tablet when an item is selected
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    }
+  };
+
   const renderContent = () => {
     switch (activeTab) {
-      case 'overview': return <Overview user={user} loans={displayLoans} transactions={displayTransactions} onTabChange={setActiveTab} />;
+      case 'overview': return <Overview user={user} loans={displayLoans} transactions={displayTransactions} onTabChange={handleTabChange} />;
       case 'loans': return <Loans loans={displayLoans} />;
       case 'payments': return <Payments transactions={displayTransactions} loans={displayLoans} />;
       case 'apply': return <Apply />;
       case 'profile': return <Profile user={user} />;
-      case 'admin': return isAdmin ? <Admin /> : <Overview user={user} loans={displayLoans} transactions={displayTransactions} onTabChange={setActiveTab} />;
-      default: return isAdmin ? <Admin /> : <Overview user={user} loans={displayLoans} transactions={displayTransactions} onTabChange={setActiveTab} />;
+      case 'admin': return isAdmin ? <Admin /> : <Overview user={user} loans={displayLoans} transactions={displayTransactions} onTabChange={handleTabChange} />;
+      default: return isAdmin ? <Admin /> : <Overview user={user} loans={displayLoans} transactions={displayTransactions} onTabChange={handleTabChange} />;
     }
   };
 
   return (
     <div className="dashboard-container">
+      {/* Mobile Overlay to dim content when sidebar is open */}
+      <div 
+        className={`sidebar-overlay ${isSidebarOpen ? "show" : ""}`} 
+        onClick={() => setSidebarOpen(false)}
+      />
+
       <Sidebar 
         isOpen={isSidebarOpen}
         isAdmin={isAdmin}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
         user={user}
         logout={logout}
       />
