@@ -377,16 +377,18 @@
 }
 
 .list-col-product {
-  color: var(--color-brand);
-  font-weight: 600;
-  font-size: 0.85rem;
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.8rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background: var(--brand-bg);
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  display: inline-block;
+  background: #f1f5f9;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  display: inline-flex;
+  align-items: center;
 }
 
 .list-col-amount {
