@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu } from 'lucide-react';
 import Sidebar from './Sidebar';
 import Overview from './Overview';
@@ -48,6 +48,29 @@ const mockTransactions: Transaction[] = [
 
 export default function Dashboard() {
   const { user, logout, isInitializing } = useAuth();
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const lastScrollTop = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!contentRef.current) return;
+      const currentScrollTop = contentRef.current.scrollTop;
+      
+      // Detect scroll direction for header collapse/expand
+      if (currentScrollTop > lastScrollTop.current && currentScrollTop > 80) {
+        setIsHeaderVisible(false);
+      } else {
+        setIsHeaderVisible(true);
+      }
+      lastScrollTop.current = currentScrollTop <= 0 ? 0 : currentScrollTop;
+    };
+
+    const scrollArea = contentRef.current;
+    scrollArea?.addEventListener('scroll', handleScroll, { passive: true });
+    return () => scrollArea?.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (isInitializing) {
     return <div className="loading-screen">Initializing Dashboard...</div>;
@@ -129,9 +152,9 @@ export default function Dashboard() {
         logout={logout}
       />
 
-      <main className="content">
+      <main className="content" ref={contentRef}>
         <div className="content-container">
-          <div className="company-header">
+          <div className={`company-header ${!isHeaderVisible ? 'collapsed' : ''}`}>
             <button 
               className="mobile-menu-btn" 
               onClick={() => setSidebarOpen(!isSidebarOpen)}
@@ -141,11 +164,13 @@ export default function Dashboard() {
             </button>
             <span className="company-name">Mulonga Group</span>
           </div>
-          <div className="greeting-section">
+          <div className={`greeting-section ${!isHeaderVisible ? 'collapsed' : ''}`}>
             <h1>Welcome, {user.name.split(' ')[0]}!</h1>
             <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
           </div>
-          {renderContent()}
+          <div key={activeTab} className="fade-in tab-content-wrapper">
+            {renderContent()}
+          </div>
         </div>
       </main>
     </div>
