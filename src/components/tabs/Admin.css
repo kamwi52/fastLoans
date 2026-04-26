@@ -616,28 +616,8 @@
   font-size: 0.85rem;
 }
 
-/* Mobile Toggle Styles */
-.mobile-menu-btn {
-  display: none;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 8px;
-  margin-right: 1rem;
-  backdrop-filter: blur(8px);
-  transition: all 0.2s;
-}
-
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .mobile-menu-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .admin-list-header,
   .admin-list-row {
     grid-template-columns: 70px 1fr 1fr 100px 90px 90px 70px;
@@ -655,7 +635,8 @@
 
 @media (max-width: 768px) {
   .admin-header-section {
-    flex-direction: column;
+    flex-direction: column !important;
+    align-items: stretch !important;
     padding: 1.5rem;
     gap: 1.5rem;
   }
@@ -670,9 +651,16 @@
   }
 
   .sheet-link-btn {
-    width: 100%;
+    width: 100% !important;
     justify-content: center;
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #2ECC71 0%, #27ae60 100%);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
   }
+
+  .admin-title-group {
 
   .admin-stats-summary {
     display: grid;
