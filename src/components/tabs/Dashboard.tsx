@@ -10,15 +10,6 @@ import { useAuth } from '../../context/AuthContext';
 import './Dashboard.css';
 import type { User, Loan, Transaction } from '../../types';
 
-const mockUser: User = {
-  id: 'USR-001',
-  name: 'John Doe',
-  accountNumber: 'ZM-882910',
-  phone: '+260971234567',
-  email: 'john.doe@example.com',
-  creditScore: 720,
-  role: 'client',
-};
 
 const mockLoans: Loan[] = [
   {
@@ -55,10 +46,17 @@ const mockTransactions: Transaction[] = [
 ];
 
 export default function Dashboard() {
-  const { user: authUser, logout } = useAuth();
-  const user = authUser || mockUser;
-  const isAdmin = user.role === 'admin';
+  const { user, logout, isInitializing } = useAuth();
 
+  if (isInitializing) {
+    return <div className="loading-screen">Initializing Dashboard...</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  const isAdmin = user.role === 'admin';
   const [activeTab, setActiveTab] = useState<string>(isAdmin ? 'admin' : 'overview');
   // Initialize sidebar state based on viewport
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1024);
@@ -76,14 +74,8 @@ export default function Dashboard() {
 
   // Sync active tab if user role changes (e.g. on initial load from context)
   useEffect(() => {
-    if (authUser) {
-      setActiveTab(authUser.role === 'admin' ? 'admin' : 'overview');
-    }
-  }, [authUser?.role]);
-
-  if (!user) {
-    return <div className="loading-screen">Initializing Dashboard...</div>;
-  }
+    setActiveTab(user.role === 'admin' ? 'admin' : 'overview');
+  }, [user.role]);
 
   // Admins see an empty state for personal loan tabs to separate views.
   const displayLoans = isAdmin ? [] : mockLoans;

@@ -39,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       {!isCollapsed && (
         <div className="sidebar-brand">
           <ShieldCheck size={24} color="var(--accent)" />
-          <span className="brand-name">Target everyones need.</span>
+          <span className="brand-name">Target everyone's needs.</span>
         </div>
       )}
       

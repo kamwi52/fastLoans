@@ -96,6 +96,38 @@
   border-left: 3px solid #dc2626;
 }
 
+.login-method-toggle {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  background: #f1f5f9;
+  padding: 0.5rem;
+  border-radius: 12px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #64748b;
+  background: transparent;
+}
+
+.toggle-btn.active {
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn:hover:not(.active) {
+  color: #475569;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;

@@ -2,11 +2,11 @@ import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 
-interface ProtectedRouteProps {
+interface AdminRouteProps {
   children: React.ReactNode;
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
   const { isAuthenticated, isInitializing, user } = useAuth();
   const location = useLocation();
 
@@ -18,9 +18,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Redirect admins to /admin route
-  if (user?.role === 'admin') {
-    return <Navigate to="/admin" replace />;
+  if (user?.role !== 'admin') {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

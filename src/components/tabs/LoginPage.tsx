@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Aurora from './Aurora';
@@ -7,21 +7,37 @@ import './LoginPage.css';
 
 export const LoginPage: React.FC = () => {
   const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [showPin, setShowPin] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const [loginMethod, setLoginMethod] = useState<'phone' | 'email'>('phone');
+  const { login, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      navigate(user.role === 'admin' ? '/admin' : '/');
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
-    if (phone.trim().length < 10) {
-      setError('Please enter a valid phone number');
-      return;
+    if (loginMethod === 'phone') {
+      if (phone.trim().length < 10) {
+        setError('Please enter a valid phone number');
+        return;
+      }
+    } else {
+      if (!email.includes('@')) {
+        setError('Please enter a valid email');
+        return;
+      }
     }
+
     if (pin.length !== 4) {
       setError('PIN must be 4 digits');
       return;
@@ -30,9 +46,21 @@ export const LoginPage: React.FC = () => {
     setLoading(true);
     // Simulate authentication delay for better UX
     setTimeout(() => {
-      login(phone, pin); // Correctly passing both arguments
+      login(phone || email, pin, email || undefined);
       setLoading(false);
-      navigate('/');
+      
+      // Redirect based on role - determine role from login logic
+      const isAdmin = 
+        phone === '0999999999' || 
+        email === 'admin@targeteveryone.com' ||
+        phone.includes('admin') ||
+        email?.includes('admin');
+      
+      if (isAdmin) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     }, 800);
   };
 
@@ -54,20 +82,53 @@ export const LoginPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="login-form">
             {error && <div className="login-error-msg">⚠️ {error}</div>}
             
-            <div className="form-group">
-              <label>Phone Number</label>
-              <div className="input-icon-wrapper">
-                <Phone size={18} className="input-icon" />
-                <input
-                  type="tel"
-                  placeholder="+260 9XX XXX XXX"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                  disabled={loading}
-                />
-              </div>
+            {/* Login Method Toggle */}
+            <div className="login-method-toggle">
+              <button
+                type="button"
+                className={`toggle-btn ${loginMethod === 'phone' ? 'active' : ''}`}
+                onClick={() => setLoginMethod('phone')}
+              >
+                Phone
+              </button>
+              <button
+                type="button"
+                className={`toggle-btn ${loginMethod === 'email' ? 'active' : ''}`}
+                onClick={() => setLoginMethod('email')}
+              >
+                Email
+              </button>
             </div>
+            
+            {loginMethod === 'phone' ? (
+              <div className="form-group">
+                <label>Phone Number</label>
+                <div className="input-icon-wrapper">
+                  <Phone size={18} className="input-icon" />
+                  <input
+                    type="tel"
+                    placeholder="+260 9XX XXX XXX"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="form-group">
+                <label>Email Address</label>
+                <div className="input-icon-wrapper">
+                  <Phone size={18} className="input-icon" />
+                  <input
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+            )}
             
             <div className="form-group">
               <label>Secure PIN</label>

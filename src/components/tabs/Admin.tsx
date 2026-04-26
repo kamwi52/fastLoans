@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { 
   BarChart3, 
   Search, 
-  Filter, 
-  Users, 
-  Clock, 
-  CheckCircle, 
+  Filter,
   MoreHorizontal 
 } from 'lucide-react';
 import { fmtZMK } from './formatters';
@@ -40,9 +37,10 @@ export default function Admin() {
 
   return (
     <div className="admin-root fade-in">
-      <div className="admin-header">
-        <div>
-          <h2>Admin Console</h2>
+      {/* Header Section */}
+      <div className="admin-header-section">
+        <div className="admin-title-group">
+          <h2>Applications</h2>
           <p>Manage and review incoming loan applications</p>
         </div>
         <a 
@@ -51,35 +49,28 @@ export default function Admin() {
           rel="noreferrer"
           className="sheet-link-btn"
         >
-          <BarChart3 size={18} /> Open Google Sheet
+          <BarChart3 size={18} /> Export
         </a>
       </div>
 
-      <div className="admin-stats-grid">
-        <div className="admin-stat-card elevation">
-          <div className="stat-icon-wrap primary"><Users size={20} /></div>
-          <div className="stat-data">
-            <span className="stat-title">New Today</span>
-            <span className="stat-count">12</span>
-          </div>
+      {/* Stats Summary */}
+      <div className="admin-stats-summary">
+        <div className="stat-item">
+          <span className="stat-label">New Today</span>
+          <span className="stat-value">12</span>
         </div>
-        <div className="admin-stat-card elevation">
-          <div className="stat-icon-wrap warning"><Clock size={20} /></div>
-          <div className="stat-data">
-            <span className="stat-title">Pending KYC</span>
-            <span className="stat-count warning">5</span>
-          </div>
+        <div className="stat-item">
+          <span className="stat-label">Pending KYC</span>
+          <span className="stat-value warning">5</span>
         </div>
-        <div className="admin-stat-card elevation">
-          <div className="stat-icon-wrap success"><CheckCircle size={20} /></div>
-          <div className="stat-data">
-            <span className="stat-title">Total Disbursed</span>
-            <span className="stat-count success">{fmtZMK(42500)}</span>
-          </div>
+        <div className="stat-item">
+          <span className="stat-label">Total Disbursed</span>
+          <span className="stat-value success">{fmtZMK(42500)}</span>
         </div>
       </div>
 
-      <div className="table-controls">
+      {/* Controls */}
+      <div className="admin-controls">
         <div className="search-box">
           <Search size={18} />
           <input 
@@ -100,39 +91,50 @@ export default function Admin() {
         </div>
       </div>
 
-      <div className="admin-table-wrapper">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Ref ID</th>
-              <th>Applicant</th>
-              <th>Product</th>
-              <th>Amount</th>
-              <th>KYC</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredApps.map(app => (
-              <tr key={app.id}>
-                <td className="font-mono">{app.id}</td>
-                <td>{app.applicant}</td>
-                <td>{app.product}</td>
-                <td><strong>{fmtZMK(app.amount)}</strong></td>
-                <td>
-                  <span className={`kyc-tag ${app.kyc.toLowerCase()}`}>{app.kyc}</span>
-                </td>
-                <td>
-                  <span className={`status-tag ${app.status.toLowerCase()}`}>{app.status}</span>
-                </td>
-                <td>
-                  <button className="review-btn"><MoreHorizontal size={16} /></button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* List Container */}
+      <div className="admin-list-container">
+        {/* List Header */}
+        <div className="admin-list-header">
+          <div className="list-col-id">Ref ID</div>
+          <div className="list-col-applicant">Applicant</div>
+          <div className="list-col-product">Product</div>
+          <div className="list-col-amount">Amount</div>
+          <div className="list-col-kyc">KYC</div>
+          <div className="list-col-status">Status</div>
+          <div className="list-col-actions">Action</div>
+        </div>
+
+        {/* List Body */}
+        <div className="admin-list-body">
+          {filteredApps.map(app => (
+            <div key={app.id} className="admin-list-row">
+              <div className="list-col-id"><span className="font-mono">{app.id}</span></div>
+              <div className="list-col-applicant">{app.applicant}</div>
+              <div className="list-col-product">{app.product}</div>
+              <div className="list-col-amount"><strong>{fmtZMK(app.amount)}</strong></div>
+              <div className="list-col-kyc">
+                <span className={`badge badge-${app.kyc.toLowerCase()}`}>{app.kyc}</span>
+              </div>
+              <div className="list-col-status">
+                <span className={`badge badge-${app.status.toLowerCase()}`}>{app.status}</span>
+              </div>
+              <div className="list-col-actions">
+                <button className="icon-btn" title="More options"><MoreHorizontal size={18} /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Sticky Action Bar */}
+      <div className="admin-action-bar">
+        <div className="action-bar-content">
+          <span className="selection-count">{filteredApps.length} applications shown</span>
+          <div className="action-buttons">
+            <button className="btn btn-secondary">Bulk Review</button>
+            <button className="btn btn-primary">Export Selected</button>
+          </div>
+        </div>
       </div>
     </div>
   );

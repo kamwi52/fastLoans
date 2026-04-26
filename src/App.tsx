@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './ProtectedRoute';
+import { AdminRoute } from './AdminRoute';
 import LoginPage from './components/tabs/LoginPage';
 import OtpVerify from './components/tabs/OtpVerify';
 import Dashboard from './components/tabs/Dashboard';
@@ -16,13 +17,23 @@ const App: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/verify" element={<OtpVerify />} />
 
-          {/* Protected Application Routes */}
+          {/* Protected Client Route */}
           <Route
             path="/"
             element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Admin Route */}
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <Dashboard />
+              </AdminRoute>
             }
           />
 
