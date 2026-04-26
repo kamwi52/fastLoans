@@ -1,10 +1,9 @@
 .dashboard-container {
   display: flex;
-  height: 100vh;
-  background-color: #f5f7fa;
+  min-height: 100vh;
   width: 100%;
-  overflow: hidden;
   position: relative;
+  /* The background gradient is handled in Admin.css overrides */
 }
 
 .sidebar {
@@ -20,13 +19,14 @@
   padding: 1.5rem 0;
   flex-shrink: 0;
   align-items: center;
-  z-index: 1000;
-  transition: width 0.3s ease;
+  z-index: 1100;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .sidebar.collapsed {
   width: 80px;
+  overflow: hidden;
 }
 
 .sidebar-toggle-btn {
@@ -37,15 +37,15 @@
   width: 28px;
   height: 28px;
   background: white;
-  border: 1px solid var(--border);
+  border: 1px solid #e2e8f0;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: #6B7280;
-  transition: all 0.2s ease, opacity 0.3s;
-  z-index: 1001;
+  transition: all 0.3s ease;
+  z-index: 1101;
   box-shadow: var(--shadow-sm);
 }
 
@@ -112,7 +112,7 @@
 }
 
 .sidebar nav button.active {
-  background-color: var(--brand); /* Ocean - brand color */
+  background-color: var(--color-brand);
   color: white;
   border-radius: 0;
   position: relative;
@@ -127,7 +127,7 @@
   position: absolute;
   left: 0;
   width: 4px;
-  height: 70%;
+  height: 60%;
   background: white;
   border-radius: 0 4px 4px 0;
   box-shadow: 0 0 8px white;
@@ -196,13 +196,12 @@
 
 .content {
   flex: 1;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Anchors the content container to the center */
+  align-items: center;
   min-width: 0;
   width: 100%;
-  margin-left: 0; /* Content is no longer pushed by fixed sidebar */
+  position: relative;
 }
 
 .content-container {
@@ -210,9 +209,9 @@
   flex-direction: column;
   min-height: 100%;
   width: 100%;
-  max-width: 1400px; /* Limits expansion on ultrawide monitors for better focus */
-  padding: 0;
+  max-width: 1280px; /* Optimal reading width for dashboard data */
   margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .company-header {
@@ -270,11 +269,6 @@
   font-weight: 700;
   font-size: 0.9rem;
   box-shadow: var(--shadow-md);
-}
-
-.header-titles {
-  display: flex;
-  flex-direction: column;
 }
 
 .sidebar-handle {
@@ -346,6 +340,38 @@
   .content-container { padding: 2.5rem; }
 }
 
+/* Header Quick Actions */
+.header-quick-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.quick-action-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quick-action-pill:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 /* Mobile Menu Toggle Button Enhancements */
 .mobile-menu-btn {
   display: none;
@@ -377,6 +403,10 @@
   .greeting-section {
     width: 100%;
     align-items: center;
+  }
+
+  .header-quick-actions {
+    justify-content: center;
   }
 
   .sidebar {

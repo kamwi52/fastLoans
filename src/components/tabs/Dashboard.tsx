@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, PlusCircle, Wallet, Clock } from 'lucide-react';
 import Sidebar from './Sidebar';
 import Overview from './Overview';
 import Loans from './Loans';
@@ -167,6 +167,20 @@ export default function Dashboard() {
           <div className={`greeting-section ${!isHeaderVisible ? 'collapsed' : ''}`}>
             <h1>Welcome, {user.name.split(' ')[0]}!</h1>
             <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+            
+            {!isAdmin && (
+              <div className="header-quick-actions">
+                <button onClick={() => handleTabChange('apply')} className="quick-action-pill">
+                  <PlusCircle size={16} /> Apply Now
+                </button>
+                <button onClick={() => handleTabChange('payments')} className="quick-action-pill">
+                  <Wallet size={16} /> Make Payment
+                </button>
+                <button onClick={() => handleTabChange('loans')} className="quick-action-pill">
+                  <Clock size={16} /> My Loans
+                </button>
+              </div>
+            )}
           </div>
           <div key={activeTab} className="fade-in tab-content-wrapper">
             {renderContent()}
