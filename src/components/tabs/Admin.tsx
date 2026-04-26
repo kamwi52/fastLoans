@@ -6,6 +6,8 @@ import {
   Edit3,
   Trash2,
   PlusCircle,
+  Maximize2,
+  Minimize2,
 } from 'lucide-react';
 import { fmtZMK } from './formatters';
 import './Admin.css';
@@ -35,6 +37,7 @@ export default function Admin() {
   const [applications, setApplications] = useState<Application[]>(mockApplications);
   const [searchTerm, setSearchBar] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [isCompact, setIsCompact] = useState(false);
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
   const [formState, setFormState] = useState({
     applicant: '',
@@ -258,6 +261,14 @@ export default function Admin() {
             <option value="Rejected">Rejected</option>
           </select>
         </div>
+        <button 
+          className={`compact-toggle-btn ${isCompact ? 'active' : ''}`}
+          onClick={() => setIsCompact(!isCompact)}
+          title={isCompact ? "Standard View" : "Compact View"}
+        >
+          {isCompact ? <Maximize2 size={18} /> : <Minimize2 size={18} />}
+          <span>{isCompact ? 'Standard' : 'Compact'}</span>
+        </button>
       </div>
 
       {/* Admin Action Cards */}
@@ -277,7 +288,7 @@ export default function Admin() {
       </div>
 
       {/* List Container */}
-      <div className="admin-list-container">
+      <div className={`admin-list-container ${isCompact ? 'compact' : ''}`}>
         {/* List Header */}
         <div className="admin-list-header">
           <div className="list-col-id">Ref ID</div>
