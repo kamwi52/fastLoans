@@ -9,7 +9,7 @@ import Profile from './Profile';
 import Admin from './Admin';
 import { useAuth } from '../../context/AuthContext';
 import './Dashboard.css';
-import type { User, Loan, Transaction } from '../../types';
+import type { Loan, Transaction } from '../../types';
 
 
 const mockLoans: Loan[] = [
