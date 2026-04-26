@@ -49,6 +49,8 @@
   flex-shrink: 0;
   gap: 2rem;
   flex-wrap: wrap;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
 }
 
 .admin-title-group h2 {
@@ -92,8 +94,7 @@
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
-  padding: 0 2.5rem 1.5rem;
-  margin-bottom: 1rem;
+  padding: 0 0 1.5rem;
 }
 
 .admin-action-card {
@@ -131,10 +132,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 1.5rem 2.5rem;
+  padding: 1.5rem;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   flex-shrink: 0;
+  border-radius: 16px;
 }
 
 .stat-item {
@@ -182,11 +184,13 @@
 .admin-controls {
   display: flex;
   gap: 1rem;
-  padding: 1.5rem 2.5rem;
+  padding: 1.5rem;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   flex-wrap: wrap;
   flex-shrink: 0;
+  border-radius: 16px;
+  margin-top: 1.5rem;
 }
 
 .search-box {
@@ -284,11 +288,12 @@
 .admin-list-container {
   display: flex;
   flex-direction: column;
-  margin: 1.5rem 2.5rem;
+  margin: 1.5rem 0;
   background: white;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
+  width: 100%;
 }
 
 /* List Header */
@@ -475,9 +480,11 @@
 
 /* CRUD Panel */
 .admin-crud-panel {
-  padding: 1.5rem 2.5rem;
+  padding: 2rem;
   background: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid #e5e7eb;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  margin-top: 1.5rem;
 }
 
 .crud-header {
@@ -548,9 +555,10 @@
   bottom: 0;
   background: white;
   border-top: 1px solid #e5e7eb;
-  padding: 1rem 2.5rem;
+  padding: 1.5rem;
   flex-shrink: 0;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 0 0 12px 12px;
 }
 
 .action-bar-content {

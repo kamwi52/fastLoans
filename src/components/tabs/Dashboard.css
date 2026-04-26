@@ -198,11 +198,11 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Ensures content container is always gravity-centered */
+  align-items: center;
   min-width: 0;
   width: 100%;
   position: relative;
-  margin-left: 0 !important; /* Fixed sidebar means no margin needed */
+  margin-left: 0 !important;
 }
 
 .content-container {
@@ -210,10 +210,10 @@
   flex-direction: column;
   min-height: 100%;
   width: 100%;
-  max-width: 1200px; /* Industry standard for readable dashboard width */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
-  transition: padding 0.3s ease;
+  padding: 0 2rem 3rem;
+  box-sizing: border-box;
 }
 
 .company-header {
@@ -394,10 +394,10 @@
 
 @media (max-width: 1023px) {
   .content-container {
-    padding: 1.5rem;
-    align-items: stretch;
-    text-align: left;
-    max-width: 600px; /* Keeps mobile screens centered and balanced */
+    padding: 0 1rem 2rem;
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
     margin: 0 auto;
   }
 
@@ -417,10 +417,10 @@
   }
 
   .sidebar {
-    left: -300px;
+    left: -320px;
     top: 0;
     bottom: 0;
-    width: 280px;
+    width: 300px;
     z-index: 1200;
     transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
