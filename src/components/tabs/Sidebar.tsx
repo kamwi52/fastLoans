@@ -9,6 +9,7 @@ import {
   LogOut
 } from 'lucide-react';
 import type { User } from '../../types';
+import './Sidebar.css';
 
 interface SidebarProps {
   isOpen: boolean;
