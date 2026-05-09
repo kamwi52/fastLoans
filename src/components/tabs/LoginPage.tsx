@@ -44,23 +44,18 @@ export const LoginPage: React.FC = () => {
     }
 
     setLoading(true);
-    // Simulate authentication delay for better UX
     setTimeout(() => {
-      login(phone || email, pin, email || undefined);
-      setLoading(false);
-      
-      // Redirect based on role - determine role from login logic
-      const isAdmin = 
-        phone === '0999999999' || 
-        email === 'admin@targeteveryone.com' ||
-        phone.includes('admin') ||
-        email?.includes('admin');
+      const isAdmin = (loginMethod === 'email' && email.toLowerCase().includes('admin')) || 
+                       (loginMethod === 'phone' && phone.includes('admin'));
       
       if (isAdmin) {
+        login(phone, email || undefined, 'admin');
         navigate('/admin');
       } else {
+        login(phone, email || undefined, 'client');
         navigate('/');
       }
+      setLoading(false);
     }, 800);
   };
 

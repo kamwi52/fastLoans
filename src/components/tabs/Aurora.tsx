@@ -133,6 +133,7 @@ export default function Aurora(props: AuroraProps) {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
+    // eslint-disable-next-line prefer-const
     let program: Program | undefined;
 
     function resize() {
@@ -192,7 +193,7 @@ export default function Aurora(props: AuroraProps) {
       if (ctn && gl.canvas.parentNode === ctn) ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [amplitude]);
+  }, [amplitude, colorStops, blend]);
 
   return <div ref={ctnDom} className="aurora-container" />;
 }

@@ -1,4 +1,4 @@
-import type { User, Notification } from '../types';
+import type { User, Notification, Loan, Transaction } from '../types';
 
 export const mockUser: User = {
   id: 'USR-001',
@@ -27,4 +27,38 @@ export const mockNotifications: Notification[] = [
     read: false,
     type: 'success',
   }
+];
+
+export const mockLoans: Loan[] = [
+  {
+    id: 'LN-1001',
+    type: 'Personal',
+    status: 'Active',
+    amount: 5000,
+    balance: 3250,
+    monthlyPayment: 245,
+    interestRate: 12.5,
+    progress: 35,
+    startDate: '2024-01-15',
+    endDate: '2025-12-15',
+    nextPaymentDate: '2026-04-25',
+  },
+  {
+    id: 'LN-1005',
+    type: 'Business',
+    status: 'Pending',
+    amount: 8000,
+    balance: 8000,
+    monthlyPayment: 0,
+    interestRate: 9.5,
+    progress: 0,
+    startDate: '-',
+    endDate: '-',
+    nextPaymentDate: '-',
+  },
+];
+
+export const mockTransactions: Transaction[] = [
+  { id: 'TX-9901', date: '2026-03-25', description: 'Monthly Installment', loanId: 'LN-1001', amount: 245, type: 'debit' },
+  { id: 'TX-9850', date: '2026-02-25', description: 'Monthly Installment', loanId: 'LN-1001', amount: 245, type: 'debit' },
 ];

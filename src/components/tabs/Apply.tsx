@@ -117,7 +117,7 @@ export default function Apply() {
         body: JSON.stringify(payload),
       });
       setSubmitted(true);
-    } catch (error) {
+    } catch {
       alert('Error submitting application. Please try again.');
     } finally {
       setSubmitting(false);

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Menu, PlusCircle, Wallet, Clock } from 'lucide-react';
 import Sidebar from './Sidebar';
 import Overview from './Overview';
@@ -8,58 +9,29 @@ import Apply from './Apply';
 import Profile from './Profile';
 import Admin from './Admin';
 import { useAuth } from '../../context/AuthContext';
+import { mockLoans, mockTransactions } from '../../data/mockData';
 import './Dashboard.css';
-import type { Loan, Transaction } from '../../types';
 
-
-const mockLoans: Loan[] = [
-  {
-    id: 'LN-1001',
-    type: 'Personal',
-    status: 'Active',
-    amount: 5000,
-    balance: 3250,
-    monthlyPayment: 245,
-    interestRate: 12.5,
-    progress: 35,
-    startDate: '2024-01-15',
-    endDate: '2025-12-15',
-    nextPaymentDate: '2026-04-25',
-  },
-  {
-    id: 'LN-1005',
-    type: 'Business',
-    status: 'Pending',
-    amount: 8000,
-    balance: 8000,
-    monthlyPayment: 0,
-    interestRate: 9.5,
-    progress: 0,
-    startDate: '-',
-    endDate: '-',
-    nextPaymentDate: '-',
-  },
-];
-
-const mockTransactions: Transaction[] = [
-  { id: 'TX-9901', date: '2026-03-25', description: 'Monthly Installment', loanId: 'LN-1001', amount: 245, type: 'debit' },
-  { id: 'TX-9850', date: '2026-02-25', description: 'Monthly Installment', loanId: 'LN-1001', amount: 245, type: 'debit' },
-];
+const SCROLL_THRESHOLD = 80;
+const TABLET_BREAKPOINT = 1024;
 
 export default function Dashboard() {
   const { user, logout, isInitializing } = useAuth();
+  const location = useLocation();
+  const isAdminRoute = location.pathname === '/admin';
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const lastScrollTop = useRef(0);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [activeTab, setActiveTab] = useState<string>(isAdminRoute ? 'admin' : 'overview');
+  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > TABLET_BREAKPOINT);
 
   useEffect(() => {
     const handleScroll = () => {
       if (!contentRef.current) return;
       const currentScrollTop = contentRef.current.scrollTop;
       
-      // Detect scroll direction for header collapse/expand
-      if (currentScrollTop > lastScrollTop.current && currentScrollTop > 80) {
+      if (currentScrollTop > lastScrollTop.current && currentScrollTop > SCROLL_THRESHOLD) {
         setIsHeaderVisible(false);
       } else {
         setIsHeaderVisible(true);
@@ -72,6 +44,26 @@ export default function Dashboard() {
     return () => scrollArea?.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < TABLET_BREAKPOINT) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (isSidebarOpen && window.innerWidth < TABLET_BREAKPOINT) {
+      document.body.classList.add('lock-scroll');
+    } else {
+      document.body.classList.remove('lock-scroll');
+    }
+    return () => document.body.classList.remove('lock-scroll');
+  }, [isSidebarOpen]);
+
   if (isInitializing) {
     return <div className="loading-screen">Initializing Dashboard...</div>;
   }
@@ -80,36 +72,7 @@ export default function Dashboard() {
     return null;
   }
 
-  const isAdmin = user.role === 'admin';
-  const [activeTab, setActiveTab] = useState<string>(isAdmin ? 'admin' : 'overview');
-  // Initialize sidebar state based on viewport
-  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1024);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width < 1024) {
-        setSidebarOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Prevent background scrolling when sidebar is open on mobile
-  useEffect(() => {
-    if (isSidebarOpen && window.innerWidth < 1024) {
-      document.body.classList.add('lock-scroll');
-    } else {
-      document.body.classList.remove('lock-scroll');
-    }
-    return () => document.body.classList.remove('lock-scroll');
-  }, [isSidebarOpen]);
-
-  // Sync active tab if user role changes (e.g. on initial load from context)
-  useEffect(() => {
-    setActiveTab(user.role === 'admin' ? 'admin' : 'overview');
-  }, [user.role]);
+  const isAdmin = user.role === 'admin' || isAdminRoute;
 
   // Admins see an empty state for personal loan tabs to separate views.
   const displayLoans = isAdmin ? [] : mockLoans;
@@ -118,7 +81,7 @@ export default function Dashboard() {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
     // Automatically close sidebar on mobile/tablet when an item is selected
-    if (window.innerWidth < 1024) {
+    if (window.innerWidth < TABLET_BREAKPOINT) {
       setSidebarOpen(false);
     }
   };
@@ -143,27 +106,35 @@ export default function Dashboard() {
         onClick={() => setSidebarOpen(false)}
       />
 
-      <Sidebar 
-        isOpen={isSidebarOpen}
-        isAdmin={isAdmin}
-        activeTab={activeTab}
-        setActiveTab={handleTabChange}
-        user={user}
-        logout={logout}
-      />
+      <div className="dashboard-main-layout">
+        <Sidebar 
+          isOpen={isSidebarOpen}
+          isAdmin={isAdmin}
+          activeTab={activeTab}
+          setActiveTab={handleTabChange}
+          user={user}
+          logout={logout}
+        />
 
-      <main className="content" ref={contentRef}>
-        <div className="content-container">
-          <div className={`company-header ${!isHeaderVisible ? 'collapsed' : ''}`}>
-            <button 
-              className="mobile-menu-btn" 
-              onClick={() => setSidebarOpen(!isSidebarOpen)}
-              aria-label="Toggle Menu"
-            >
-              <Menu size={24} />
-            </button>
-            <span className="company-name">Mulonga Group</span>
-          </div>
+        <div className="content flex-1 flex flex-col overflow-hidden">
+          <header className={`company-header ${!isHeaderVisible ? 'collapsed' : ''}`}>
+            <div className="content-container py-0">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-4">
+                  <button 
+                    className="mobile-menu-btn" 
+                    onClick={() => setSidebarOpen(!isSidebarOpen)}
+                    aria-label="Toggle Menu"
+                  >
+                    <Menu size={24} />
+                  </button>
+                  <span className="company-name">Mulonga Group</span>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <main className="content-container overflow-y-auto flex-1" ref={contentRef}>
           <div className={`greeting-section ${!isHeaderVisible ? 'collapsed' : ''}`}>
             <h1>Welcome, {user.name.split(' ')[0]}!</h1>
             <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
@@ -185,8 +156,9 @@ export default function Dashboard() {
           <div key={activeTab} className="fade-in tab-content-wrapper">
             {renderContent()}
           </div>
+        </main>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
