@@ -1,6 +1,6 @@
 .sidebar {
   position: relative;
-  height: 100%;
+  height: 100vh;
   width: 280px;
   background: linear-gradient(180deg, rgba(15, 45, 107, 0.6) 0%, rgba(8, 15, 30, 0.95) 100%);
   backdrop-filter: blur(20px);
