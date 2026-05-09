@@ -116,11 +116,11 @@ export default function Dashboard() {
           logout={logout}
         />
 
-        <div className="content flex-1 flex flex-col overflow-hidden">
+        <div className="content">
           <header className={`company-header ${!isHeaderVisible ? 'collapsed' : ''}`}>
-            <div className="content-container py-0">
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-4">
+            <div className="content-container">
+              <div className="header-inner">
+                <div className="header-left">
                   <button 
                     className="mobile-menu-btn" 
                     onClick={() => setSidebarOpen(!isSidebarOpen)}
@@ -134,7 +134,7 @@ export default function Dashboard() {
             </div>
           </header>
 
-          <main className="content-container overflow-y-auto flex-1" ref={contentRef}>
+          <main className="content-main" ref={contentRef}>
           <div className={`greeting-section ${!isHeaderVisible ? 'collapsed' : ''}`}>
             <h1>Welcome, {user.name.split(' ')[0]}!</h1>
             <p className="header-date">{new Date().toLocaleDateString('en-ZM', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
