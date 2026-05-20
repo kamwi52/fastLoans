@@ -2,18 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Aurora from './Aurora';
-import { Phone, Lock, Eye, EyeOff, Shield } from 'lucide-react';
+import { Phone, Lock, Eye, EyeOff, Shield, User, Mail, ArrowRight } from 'lucide-react';
 import './LoginPage.css';
 
 export const LoginPage: React.FC = () => {
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [pin, setPin] = useState('');
+  const [isSignup, setIsSignup] = useState(false);
+  
+  // Signup form states
+  const [signupName, setSignupName] = useState('');
+  const [signupPhone, setSignupPhone] = useState('');
+  const [signupEmail, setSignupEmail] = useState('');
+  const [signupPin, setSignupPin] = useState('');
+  const [signupConfirmPin, setSignupConfirmPin] = useState('');
+  const [showSignupPin, setShowSignupPin] = useState(false);
+  
+  // Login form states
+  const [loginPhone, setLoginPhone] = useState('');
+  const [loginPin, setLoginPin] = useState('');
+  const [showLoginPin, setShowLoginPin] = useState(false);
+  
   const [error, setError] = useState('');
-  const [showPin, setShowPin] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loginMethod, setLoginMethod] = useState<'phone' | 'email'>('phone');
-  const { login, isAuthenticated, user } = useAuth();
+  const { createAccount, login, isAuthenticated, user, isSignupFlow } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,42 +32,73 @@ export const LoginPage: React.FC = () => {
     }
   }, [isAuthenticated, user, navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
-    if (loginMethod === 'phone') {
-      if (phone.trim().length < 10) {
-        setError('Please enter a valid phone number');
-        return;
-      }
-    } else {
-      if (!email.includes('@')) {
-        setError('Please enter a valid email');
-        return;
-      }
+
+    // Validation
+    if (!signupName.trim()) {
+      setError('Name is required');
+      return;
+    }
+    if (signupPhone.trim().length < 10) {
+      setError('Please enter a valid phone number');
+      return;
+    }
+    if (!signupEmail.includes('@')) {
+      setError('Please enter a valid email');
+      return;
+    }
+    if (signupPin.length !== 4 || !/^\d+$/.test(signupPin)) {
+      setError('PIN must be 4 digits');
+      return;
+    }
+    if (signupPin !== signupConfirmPin) {
+      setError('PINs do not match');
+      return;
     }
 
-    if (pin.length !== 4) {
+    setLoading(true);
+    setTimeout(async () => {
+      const success = await createAccount(signupPhone, signupEmail, signupName, signupPin);
+      if (success) {
+        navigate('/verify');
+      } else {
+        setError('Account with this phone number already exists');
+      }
+      setLoading(false);
+    }, 800);
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    const trimmedPhone = loginPhone.trim();
+    if (trimmedPhone.toLowerCase() !== 'admin' && trimmedPhone.length < 10) {
+      setError('Please enter a valid phone number or username');
+      return;
+    }
+    if (loginPin.length !== 4 || !/^\d+$/.test(loginPin)) {
       setError('PIN must be 4 digits');
       return;
     }
 
     setLoading(true);
-    setTimeout(() => {
-      const isAdmin = (loginMethod === 'email' && email.toLowerCase().includes('admin')) || 
-                       (loginMethod === 'phone' && phone.includes('admin'));
-      
-      if (isAdmin) {
-        login(phone, email || undefined, 'admin');
-        navigate('/admin');
+    setTimeout(async () => {
+      const success = await login(loginPhone, loginPin);
+      if (success) {
+        // Login successful, navigate will happen via useEffect
       } else {
-        login(phone, email || undefined, 'client');
-        navigate('/');
+        setError('Invalid phone number or PIN. Please check and try again.');
       }
       setLoading(false);
     }, 800);
   };
+
+  if (isSignupFlow) {
+    return <OtpVerifyFlow />;
+  }
 
   return (
     <div className="login-root">
@@ -70,32 +111,85 @@ export const LoginPage: React.FC = () => {
           <div className="login-header">
             <div className="login-company">Mulonga Group</div>
             <div className="login-logo">Target everyone's needs.</div>
-            <h1>Secure Access</h1>
-            <p>Enter your credentials to manage your loans</p>
+            {!isSignup ? (
+              <>
+                <h1>Secure Access</h1>
+                <p>Enter your credentials to manage your loans</p>
+              </>
+            ) : (
+              <>
+                <h1>Create Account</h1>
+                <p>Join Mulonga Group to start managing your loans</p>
+              </>
+            )}
           </div>
           
-          <form onSubmit={handleSubmit} className="login-form">
-            {error && <div className="login-error-msg">⚠️ {error}</div>}
-            
-            {/* Login Method Toggle */}
-            <div className="login-method-toggle">
-              <button
-                type="button"
-                className={`toggle-btn ${loginMethod === 'phone' ? 'active' : ''}`}
-                onClick={() => setLoginMethod('phone')}
-              >
-                Phone
+          {!isSignup ? (
+            /* LOGIN FORM */
+            <form onSubmit={handleLogin} className="login-form">
+              {error && <div className="login-error-msg">⚠️ {error}</div>}
+              
+              <div className="form-group">
+                <label>Phone Number / Username</label>
+                <div className="input-icon-wrapper">
+                  <Phone size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    placeholder="admin or +260 9XX XXX XXX"
+                    value={loginPhone}
+                    onChange={(e) => setLoginPhone(e.target.value)}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label>Secure PIN</label>
+                <div className="input-icon-wrapper pin-wrapper">
+                  <Lock size={18} className="input-icon" />
+                  <input
+                    type={showLoginPin ? 'text' : 'password'}
+                    placeholder="••••"
+                    maxLength={4}
+                    value={loginPin}
+                    onChange={(e) => setLoginPin(e.target.value)}
+                    disabled={loading}
+                    className="pin-input"
+                  />
+                  <button
+                    type="button"
+                    className="toggle-pin-btn"
+                    onClick={() => setShowLoginPin(!showLoginPin)}
+                    tabIndex={-1}
+                  >
+                    {showLoginPin ? <Eye size={18} /> : <EyeOff size={18} />}
+                  </button>
+                </div>
+              </div>
+              
+              <button type="submit" className={`login-submit-btn ${loading ? 'loading' : ''}`} disabled={loading}>
+                {loading ? 'Signing In...' : 'Sign In to Dashboard'}
               </button>
-              <button
-                type="button"
-                className={`toggle-btn ${loginMethod === 'email' ? 'active' : ''}`}
-                onClick={() => setLoginMethod('email')}
-              >
-                Email
-              </button>
-            </div>
-            
-            {loginMethod === 'phone' ? (
+            </form>
+          ) : (
+            /* SIGNUP FORM */
+            <form onSubmit={handleSignup} className="login-form">
+              {error && <div className="login-error-msg">⚠️ {error}</div>}
+              
+              <div className="form-group">
+                <label>Full Name</label>
+                <div className="input-icon-wrapper">
+                  <User size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    placeholder="John Doe"
+                    value={signupName}
+                    onChange={(e) => setSignupName(e.target.value)}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+              
               <div className="form-group">
                 <label>Phone Number</label>
                 <div className="input-icon-wrapper">
@@ -103,62 +197,99 @@ export const LoginPage: React.FC = () => {
                   <input
                     type="tel"
                     placeholder="+260 9XX XXX XXX"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    value={signupPhone}
+                    onChange={(e) => setSignupPhone(e.target.value)}
                     disabled={loading}
                   />
                 </div>
               </div>
-            ) : (
+              
               <div className="form-group">
                 <label>Email Address</label>
                 <div className="input-icon-wrapper">
-                  <Phone size={18} className="input-icon" />
+                  <Mail size={18} className="input-icon" />
                   <input
                     type="email"
                     placeholder="your.email@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={signupEmail}
+                    onChange={(e) => setSignupEmail(e.target.value)}
                     disabled={loading}
                   />
                 </div>
               </div>
-            )}
-            
-            <div className="form-group">
-              <label>Secure PIN</label>
-              <div className="input-icon-wrapper pin-wrapper">
-                <Lock size={18} className="input-icon" />
-                <input
-                  type={showPin ? 'text' : 'password'}
-                  placeholder="••••"
-                  maxLength={4}
-                  value={pin}
-                  onChange={(e) => setPin(e.target.value)}
-                  required
-                  disabled={loading}
-                  className="pin-input"
-                />
-                <button
-                  type="button"
-                  className="toggle-pin-btn"
-                  onClick={() => setShowPin(!showPin)}
-                  tabIndex={-1}
-                >
-                  {showPin ? <Eye size={18} /> : <EyeOff size={18} />}
-                </button>
+              
+              <div className="form-group">
+                <label>Create PIN</label>
+                <div className="input-icon-wrapper pin-wrapper">
+                  <Lock size={18} className="input-icon" />
+                  <input
+                    type={showSignupPin ? 'text' : 'password'}
+                    placeholder="••••"
+                    maxLength={4}
+                    value={signupPin}
+                    onChange={(e) => setSignupPin(e.target.value)}
+                    disabled={loading}
+                    className="pin-input"
+                  />
+                  <button
+                    type="button"
+                    className="toggle-pin-btn"
+                    onClick={() => setShowSignupPin(!showSignupPin)}
+                    tabIndex={-1}
+                  >
+                    {showSignupPin ? <Eye size={18} /> : <EyeOff size={18} />}
+                  </button>
+                </div>
               </div>
-            </div>
-            
-            <button type="submit" className={`login-submit-btn ${loading ? 'loading' : ''}`} disabled={loading}>
-              {loading ? 'Signing In...' : 'Sign In to Dashboard'}
-            </button>
-          </form>
+              
+              <div className="form-group">
+                <label>Confirm PIN</label>
+                <div className="input-icon-wrapper pin-wrapper">
+                  <Lock size={18} className="input-icon" />
+                  <input
+                    type={showSignupPin ? 'text' : 'password'}
+                    placeholder="••••"
+                    maxLength={4}
+                    value={signupConfirmPin}
+                    onChange={(e) => setSignupConfirmPin(e.target.value)}
+                    disabled={loading}
+                    className="pin-input"
+                  />
+                </div>
+              </div>
+              
+              <button type="submit" className={`login-submit-btn ${loading ? 'loading' : ''}`} disabled={loading}>
+                {loading ? 'Creating Account...' : 'Create Account'}
+              </button>
+            </form>
+          )}
           
           <div className="login-footer">
-            <a href="#">Forgot PIN?</a>
-            <span className="dot-sep">•</span>
-            <a href="#">Apply for Account</a>
+            {!isSignup ? (
+              <>
+                <a href="#">Forgot PIN?</a>
+                <span className="dot-sep">•</span>
+                <button 
+                  className="signup-link"
+                  onClick={() => {
+                    setIsSignup(true);
+                    setError('');
+                  }}
+                >
+                  Create Account <ArrowRight size={14} />
+                </button>
+              </>
+            ) : (
+              <button 
+                className="signup-link"
+                onClick={() => {
+                  setIsSignup(false);
+                  setError('');
+                }}
+              >
+                Back to Login
+              </button>
+            )}
           </div>
 
           <div className="security-badge">
@@ -170,5 +301,85 @@ export const LoginPage: React.FC = () => {
     </div>
   );
 };
+
+// OTP Verification Component
+function OtpVerifyFlow() {
+  const navigate = useNavigate();
+  const { verifyOtp, completeSignup, resetSignupFlow } = useAuth();
+  const [otp, setOtp] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleVerify = async () => {
+    if (otp.length !== 6 || !/^\d+$/.test(otp)) {
+      setError('Please enter a valid 6-digit code');
+      return;
+    }
+
+    setLoading(true);
+    
+    // Wait for the timeout first
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Then verify OTP
+    const success = await verifyOtp(otp);
+    setLoading(false);
+    
+    if (success) {
+      completeSignup();
+      navigate('/');
+    } else {
+      setError('Invalid OTP. Please try again');
+    }
+  };
+
+  return (
+    <div className="login-root">
+      <div className="login-bg">
+        <Aurora amplitude={1.2} />
+      </div>
+      <div className="login-container">
+        <div className="login-card fade-in">
+          <div className="login-header">
+            <h1>Verify Identity</h1>
+            <p>Enter the 6-digit code sent to your phone</p>
+          </div>
+          <div className="login-form">
+            {error && <div className="login-error-msg">⚠️ {error}</div>}
+            <div className="form-group">
+              <input 
+                type="text" 
+                placeholder="000000" 
+                maxLength={6} 
+                value={otp}
+                onChange={(e) => {
+                  setOtp(e.target.value);
+                  setError('');
+                }}
+                style={{ textAlign: 'center', fontSize: '1.5rem', letterSpacing: '4px' }}
+                disabled={loading}
+              />
+            </div>
+            <button 
+              className={`login-submit-btn ${loading ? 'loading' : ''}`}
+              onClick={handleVerify}
+              disabled={loading}
+            >
+              {loading ? 'Verifying...' : 'Verify & Continue'}
+            </button>
+          </div>
+          <div className="login-footer">
+            <button 
+              className="signup-link"
+              onClick={() => resetSignupFlow()}
+            >
+              Back to Signup
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default LoginPage;

@@ -337,6 +337,27 @@
   text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
 }
 
+.login-footer .signup-link {
+  background: none;
+  border: none;
+  color: var(--color-emerald);
+  text-decoration: none;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.login-footer .signup-link:hover {
+  color: var(--color-star-white);
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
 .dot-sep {
   color: var(--text-muted);
 }

@@ -32,6 +32,7 @@ export const mockNotifications: Notification[] = [
 export const mockLoans: Loan[] = [
   {
     id: 'LN-1001',
+    userId: 'USR-001',
     type: 'Personal',
     status: 'Active',
     amount: 5000,
@@ -45,6 +46,7 @@ export const mockLoans: Loan[] = [
   },
   {
     id: 'LN-1005',
+    userId: 'USR-001',
     type: 'Business',
     status: 'Pending',
     amount: 8000,

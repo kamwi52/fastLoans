@@ -9,7 +9,7 @@ import Apply from './Apply';
 import Profile from './Profile';
 import Admin from './Admin';
 import { useAuth } from '../../context/AuthContext';
-import { mockLoans, mockTransactions } from '../../data/mockData';
+import { getFromStorage, STORAGE_KEYS } from '../../migration';
 import './Dashboard.css';
 
 const SCROLL_THRESHOLD = 80;
@@ -73,10 +73,17 @@ export default function Dashboard() {
   }
 
   const isAdmin = user.role === 'admin' || isAdminRoute;
+  const needsDocumentUpload = !isAdmin && !user.documentsUploaded;
 
-  // Admins see an empty state for personal loan tabs to separate views.
-  const displayLoans = isAdmin ? [] : mockLoans;
-  const displayTransactions = isAdmin ? [] : mockTransactions;
+  // Dynamically fetch from localStorage
+  const allLoans = getFromStorage(STORAGE_KEYS.LOANS, []);
+  const allTransactions = getFromStorage(STORAGE_KEYS.TRANSACTIONS, []);
+
+  // Filter data based on role
+  const displayLoans = isAdmin ? allLoans : allLoans.filter((l: any) => l.userId === user.id);
+  const displayTransactions = isAdmin ? allTransactions : allTransactions.filter((t: any) => {
+    return allLoans.some((l: any) => l.id === t.loanId && l.userId === user.id);
+  });
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -153,6 +160,19 @@ export default function Dashboard() {
               </div>
             )}
           </div>
+
+          {needsDocumentUpload && (
+            <div className="document-reminder-banner">
+              <div>
+                <strong>Finish your document upload</strong>
+                <p>Upload your NRC, passport, and proof of residence so your account can be fully updated and you can borrow loans.</p>
+              </div>
+              <button className="document-reminder-button" onClick={() => handleTabChange('profile')}>
+                Upload Documents
+              </button>
+            </div>
+          )}
+
           <div key={activeTab} className="fade-in tab-content-wrapper">
             {renderContent()}
           </div>

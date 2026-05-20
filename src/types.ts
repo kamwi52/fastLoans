@@ -6,10 +6,12 @@ export interface User {
   email: string;
   creditScore: number;
   role: 'admin' | 'client';
+  documentsUploaded?: boolean;
 }
 
 export interface Loan {
   id: string;
+  userId: string;
   type: string;
   status: 'Active' | 'Pending' | 'Closed' | 'Overdue';
   amount: number;
