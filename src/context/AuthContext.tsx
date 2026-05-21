@@ -248,6 +248,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         createAccount,
         completeSignup,
         login,
+        updateDocumentsUploaded,
         logout,
         resetSignupFlow,
       }}
