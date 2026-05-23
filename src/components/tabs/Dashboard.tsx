@@ -107,12 +107,6 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      {/* Mobile Overlay to dim content when sidebar is open */}
-      <div 
-        className={`sidebar-overlay ${isSidebarOpen ? "show" : ""}`} 
-        onClick={() => setSidebarOpen(false)}
-      />
-
       <div className="dashboard-main-layout">
         <Sidebar 
           isOpen={isSidebarOpen}

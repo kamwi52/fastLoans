@@ -14,6 +14,7 @@
 
 .dashboard-main-layout {
   display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100vh;
   min-height: 100vh;
@@ -22,14 +23,6 @@
   z-index: 10;
 }
 
-.dashboard-main-layout {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-}
 
 /* Content area */
 .content {
@@ -197,25 +190,6 @@
 }
 
 /* Sidebar overlay */
-.sidebar-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(8, 15, 30, 0.8);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-}
-
-.sidebar-overlay.show {
-  display: block;
-}
-
-/* On desktop, don't show overlay */
-@media (min-width: 1024px) {
-  .sidebar-overlay {
-    display: none !important;
-  }
-}
 
 /* Loading screen */
 .loading-screen {
