@@ -10,7 +10,6 @@ export default async function handler(req: any, res: any) {
   if (!phone) return res.status(400).json({ error: 'Missing phone' });
 
   const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_SERVICE_SID } = process.env;
-  const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_SERVICE_SID } = process.env;
   if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_SERVICE_SID) {
     // Dev fallback: return a debug code so local development can proceed without Twilio
     const debugCode = Math.floor(100000 + Math.random() * 900000).toString();
