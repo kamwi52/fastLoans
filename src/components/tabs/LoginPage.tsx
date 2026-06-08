@@ -324,7 +324,7 @@ function OtpVerifyFlow() {
   const handleResend = async () => {
     if (resendCooldown > 0) return;
     try {
-      const resp = await sendOtp(window.sessionStorage.getItem('zf_signup_phone') || '');
+      await sendOtp(window.sessionStorage.getItem('zf_signup_phone') || '');
       // If sendOtp returned debugCode, it's stored in sessionStorage by sendOtp
       setResendCooldown(60); // 60s cooldown
       // Optionally show debug code in dev console
@@ -398,7 +398,7 @@ function OtpVerifyFlow() {
                 {resendCooldown > 0 ? `Resend code (${resendCooldown}s)` : 'Resend code'}
               </button>
             </div>
-            {process.env.NODE_ENV !== 'production' && (
+            {import.meta.env.DEV && (
               <div style={{ marginTop: 8, fontSize: 12, opacity: 0.8, textAlign: 'center' }}>
                 <em>Dev mode: check console or sessionStorage for debug OTP when Twilio is not configured.</em>
               </div>
