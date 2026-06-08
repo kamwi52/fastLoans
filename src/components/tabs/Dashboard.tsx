@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Menu, PlusCircle, Wallet, Clock } from 'lucide-react';
+import { PlusCircle, Wallet, Clock } from 'lucide-react';
 import Sidebar from './Sidebar';
 import Overview from './Overview';
 import Loans from './Loans';
@@ -122,13 +122,6 @@ export default function Dashboard() {
             <div className="content-container">
               <div className="header-inner">
                 <div className="header-left">
-                  <button 
-                    className="mobile-menu-btn" 
-                    onClick={() => setSidebarOpen(!isSidebarOpen)}
-                    aria-label="Toggle Menu"
-                  >
-                    <Menu size={24} />
-                  </button>
                   <span className="company-name">Mulonga Group</span>
                 </div>
               </div>

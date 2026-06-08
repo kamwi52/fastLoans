@@ -29,6 +29,7 @@ interface AuthContextType {
   isSignupFlow: boolean;
   verifyOtp: (code: string) => Promise<boolean>;
   createAccount: (phone: string, email: string, name: string, pin: string) => Promise<boolean>;
+  sendOtp: (phone: string) => Promise<{ sent: boolean; debugCode?: string } | null>;
   completeSignup: () => void;
   login: (phone: string, pin: string) => Promise<boolean>;
   updateDocumentsUploaded: (uploaded: boolean) => void;
@@ -125,7 +126,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSignupData(newAccount);
     saveSignupTemp(newAccount);
     setIsSignupFlow(true);
+    try { sessionStorage.setItem('zf_signup_phone', phone); } catch {}
+    // Attempt to send OTP via serverless API (Twilio)
+    try {
+      // use sendOtp helper (defined below)
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      await sendOtp(newAccount.phone);
+    } catch (e) {
+      // non-fatal for local/dev — server may be unconfigured
+      // caller flow will still show the OTP input
+      // eslint-disable-next-line no-console
+      console.warn('Failed to request OTP send', e);
+    }
+
     return true;
+  };
+
+  const sendOtp = async (phone: string): Promise<{ sent: boolean; debugCode?: string } | null> => {
+    try {
+      const res = await fetch('/api/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone }),
+      });
+
+      if (!res.ok) return null;
+      const data = await res.json();
+      // If the API returned a debugCode (dev fallback), store it in session for client-side verify fallback
+      if (data && data.debugCode) {
+        try { sessionStorage.setItem('zf_debug_otp', data.debugCode); } catch {}
+      }
+      return data;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('sendOtp error', e);
+      return null;
+    }
   };
 
   const verifyOtp = async (code: string): Promise<boolean> => {
@@ -140,13 +176,56 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return false;
     }
 
-    // In a real app, you'd verify against the sent OTP
-    // For now, any 6-digit code is valid
-    const verifiedAccount: SignupData = { ...currentSignupData, verified: true };
-    setSignupData(verifiedAccount);
-    saveSignupTemp(verifiedAccount);
-    saveAccount(verifiedAccount);
-    return true;
+    // Call serverless verify endpoint (Twilio Verify)
+    try {
+      // include any debugCode stored by /api/send-otp (dev fallback)
+      const debugCode = (() => { try { return sessionStorage.getItem('zf_debug_otp'); } catch { return null; } })();
+
+      const res = await fetch('/api/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: currentSignupData.phone, code, debugCode }),
+      });
+
+      if (!res.ok) {
+        // try local fallback: if debugCode stored and matches entered code, accept
+        if (debugCode && code === debugCode) {
+          const verifiedAccount: SignupData = { ...currentSignupData, verified: true };
+          setSignupData(verifiedAccount);
+          saveSignupTemp(verifiedAccount);
+          saveAccount(verifiedAccount);
+          return true;
+        }
+        return false;
+      }
+
+      const payload = await res.json();
+      if (payload && payload.valid) {
+        const verifiedAccount: SignupData = { ...currentSignupData, verified: true };
+        setSignupData(verifiedAccount);
+        saveSignupTemp(verifiedAccount);
+        saveAccount(verifiedAccount);
+        // clear debug code after success
+        try { sessionStorage.removeItem('zf_debug_otp'); } catch {}
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      // If network/server error occurs, treat as failed verification unless dev fallback matches
+      // eslint-disable-next-line no-console
+      console.error('verifyOtp error', e);
+      const debugCode = (() => { try { return sessionStorage.getItem('zf_debug_otp'); } catch { return null; } })();
+      if (debugCode && code === debugCode) {
+        const verifiedAccount: SignupData = { ...currentSignupData, verified: true };
+        setSignupData(verifiedAccount);
+        saveSignupTemp(verifiedAccount);
+        saveAccount(verifiedAccount);
+        try { sessionStorage.removeItem('zf_debug_otp'); } catch {}
+        return true;
+      }
+      return false;
+    }
   };
 
   const completeSignup = () => {
@@ -227,12 +306,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsSignupFlow(false);
     saveSignupTemp(null);
     localStorage.removeItem(TOKEN_KEY);
+    try { sessionStorage.removeItem('zf_signup_phone'); sessionStorage.removeItem('zf_debug_otp'); } catch {}
   };
 
   const resetSignupFlow = () => {
     setSignupData(null);
     setIsSignupFlow(false);
     saveSignupTemp(null);
+    try { sessionStorage.removeItem('zf_signup_phone'); sessionStorage.removeItem('zf_debug_otp'); } catch {}
   };
 
   return (
@@ -246,6 +327,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isSignupFlow,
         verifyOtp,
         createAccount,
+        sendOtp,
         completeSignup,
         login,
         updateDocumentsUploaded,

@@ -59,15 +59,16 @@ export const LoginPage: React.FC = () => {
     }
 
     setLoading(true);
-    setTimeout(async () => {
+    try {
       const success = await createAccount(signupPhone, signupEmail, signupName, signupPin);
       if (success) {
         navigate('/verify');
       } else {
         setError('Account with this phone number already exists');
       }
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -309,6 +310,31 @@ function OtpVerifyFlow() {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { sendOtp } = useAuth();
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  useEffect(() => {
+    let timer: number | undefined;
+    if (resendCooldown > 0) {
+      timer = window.setInterval(() => setResendCooldown(c => Math.max(0, c - 1)), 1000);
+    }
+    return () => { if (timer) window.clearInterval(timer); };
+  }, [resendCooldown]);
+
+  const handleResend = async () => {
+    if (resendCooldown > 0) return;
+    try {
+      const resp = await sendOtp(window.sessionStorage.getItem('zf_signup_phone') || '');
+      // If sendOtp returned debugCode, it's stored in sessionStorage by sendOtp
+      setResendCooldown(60); // 60s cooldown
+      // Optionally show debug code in dev console
+      try { const dc = sessionStorage.getItem('zf_debug_otp'); if (dc) console.info('Dev OTP code:', dc); } catch {}
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Resend failed', e);
+      setError('Failed to resend code. Please try again later.');
+    }
+  };
 
   const handleVerify = async () => {
     if (otp.length !== 6 || !/^\d+$/.test(otp)) {
@@ -367,6 +393,16 @@ function OtpVerifyFlow() {
             >
               {loading ? 'Verifying...' : 'Verify & Continue'}
             </button>
+            <div style={{ marginTop: 12, textAlign: 'center' }}>
+              <button className="signup-link" onClick={handleResend} disabled={resendCooldown > 0}>
+                {resendCooldown > 0 ? `Resend code (${resendCooldown}s)` : 'Resend code'}
+              </button>
+            </div>
+            {process.env.NODE_ENV !== 'production' && (
+              <div style={{ marginTop: 8, fontSize: 12, opacity: 0.8, textAlign: 'center' }}>
+                <em>Dev mode: check console or sessionStorage for debug OTP when Twilio is not configured.</em>
+              </div>
+            )}
           </div>
           <div className="login-footer">
             <button 
